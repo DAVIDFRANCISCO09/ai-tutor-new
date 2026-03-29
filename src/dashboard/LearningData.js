@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { Microscope, FlaskConical, Zap, Calculator, Sprout, Languages } from 'lucide-react';
 export const SUBJECTS = [
   { name: 'Biology', progress: 70, icon: <Microscope size={20} />, questionsAsked: 24, topicsExplored: 8 },
