@@ -59,6 +59,7 @@ export const DashboardHeader = ({
             >
               <ArrowLeft size={20} />
             </button>
+            
           ) : (
             <div className="w-10 h-10 bg-[#1a365d] rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
               <span className="text-white font-display font-black text-base">AT</span>
@@ -101,7 +102,7 @@ export const DashboardHeader = ({
           className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all border border-transparent hover:border-red-100"
         >
           <LogOut size={18} />
-          <span className="hidden sm:inline uppercase tracking-wider">Logout</span>
+          <span className="hidden sm:inline uppercase tracking-wider">logout</span>
         </button>
       </div>
     </header>
