@@ -1,12 +1,13 @@
-
+import React from 'react';
 import { Microscope, FlaskConical, Zap, Calculator, Sprout, Languages } from 'lucide-react';
+
 export const SUBJECTS = [
-  { name: 'Biology', progress: 70, icon: <Microscope size={20} />, questionsAsked: 24, topicsExplored: 8 },
-  { name: 'Chemistry', progress: 55, icon: <FlaskConical size={20} />, questionsAsked: 15, topicsExplored: 4 },
-  { name: 'Physics', progress: 65, icon: <Zap size={20} />, questionsAsked: 18, topicsExplored: 6 },
-  { name: 'Mathematics', progress: 85, icon: <Calculator size={20} />, questionsAsked: 32, topicsExplored: 12 },
-  { name: 'Agriculture', progress: 40, icon: <Sprout size={20} />, questionsAsked: 10, topicsExplored: 3 },
-  { name: 'English', progress: 75, icon: <Languages size={20} />, questionsAsked: 28, topicsExplored: 10 },
+  { name: 'Biology',     progress: 70, icon: <Microscope size={20} />,    questionsAsked: 24, topicsExplored: 8  },
+  { name: 'Chemistry',   progress: 55, icon: <FlaskConical size={20} />,  questionsAsked: 15, topicsExplored: 4  },
+  { name: 'Physics',     progress: 65, icon: <Zap size={20} />,           questionsAsked: 18, topicsExplored: 6  },
+  { name: 'Mathematics', progress: 85, icon: <Calculator size={20} />,    questionsAsked: 32, topicsExplored: 12 },
+  { name: 'Agriculture', progress: 40, icon: <Sprout size={20} />,        questionsAsked: 10, topicsExplored: 3  },
+  { name: 'English',     progress: 75, icon: <Languages size={20} />,     questionsAsked: 28, topicsExplored: 10 },
 ];
 
 export const TOPICS_DATA = {
@@ -14,49 +15,38 @@ export const TOPICS_DATA = {
     'Form 1': ['Numbers', 'Algebraic Expressions', 'Linear Equations', 'Geometry Basics', 'Statistics'],
     'Form 2': ['Quadratic Equations', 'Circles', 'Trigonometry', 'Probability', 'Matrices'],
     'Form 3': ['Functions', 'Coordinate Geometry', 'Vectors', 'Calculus Intro', 'Linear Programming'],
-    'Form 4': ['Advanced Calculus', 'Complex Numbers', 'Differential Equations', 'Mechanics', 'Advanced Statistics']
+    'Form 4': ['Advanced Calculus', 'Complex Numbers', 'Differential Equations', 'Mechanics', 'Advanced Statistics'],
   },
   Physics: {
     'Form 1': ['Introduction to Physics', 'Measurement', 'Force and Motion', 'Energy', 'Pressure'],
     'Form 2': ['Heat and Temperature', 'Light and Optics', 'Sound', 'Static Electricity', 'Current Electricity'],
     'Form 3': ['Magnetism', 'Electromagnetism', 'Electronics', 'Radioactivity', 'Atomic Physics'],
-    'Form 4': ['Wave Motion', 'Quantum Physics', 'Astrophysics', 'Medical Physics', 'Renewable Energy']
+    'Form 4': ['Wave Motion', 'Quantum Physics', 'Astrophysics', 'Medical Physics', 'Renewable Energy'],
   },
   Biology: {
     'Form 1': ['Introduction to Biology', 'Classification', 'The Cell', 'Nutrition in Plants', 'Nutrition in Animals'],
     'Form 2': ['Transport in Plants', 'Transport in Animals', 'Respiration', 'Excretion', 'Gaseous Exchange'],
     'Form 3': ['Coordination and Response', 'Support and Movement', 'Reproduction', 'Genetics', 'Evolution'],
-    'Form 4': ['Ecology', 'Human Health', 'Biotechnology', 'Applied Biology', 'Conservation']
+    'Form 4': ['Ecology', 'Human Health', 'Biotechnology', 'Applied Biology', 'Conservation'],
   },
   English: {
     'Form 1': ['Grammar Basics', 'Sentence Structure', 'Short Stories', 'Poetry Intro', 'Letter Writing'],
     'Form 2': ['Advanced Grammar', 'Essay Writing', 'Drama Basics', 'Oral Literature', 'Comprehension Skills'],
     'Form 3': ['Literature Analysis', 'Creative Writing', 'Public Speaking', 'Media Literacy', 'Research Skills'],
-    'Form 4': ['Critical Thinking', 'Academic Writing', 'Shakespearean Drama', 'Modern African Literature', 'Exam Techniques']
+    'Form 4': ['Critical Thinking', 'Academic Writing', 'Shakespearean Drama', 'Modern African Literature', 'Exam Techniques'],
   },
   Chemistry: {
     'Form 1': ['Introduction to Chemistry', 'States of Matter', 'Atomic Structure', 'Periodic Table', 'Chemical Bonding'],
     'Form 2': ['Chemical Equations', 'Acids, Bases and Salts', 'Mole Concept', 'Gas Laws', 'Energy Changes'],
     'Form 3': ['Rates of Reaction', 'Reversible Reactions', 'Redox Reactions', 'Electrolysis', 'Organic Chemistry Intro'],
-    'Form 4': ['Advanced Organic Chemistry', 'Industrial Chemistry', 'Environmental Chemistry', 'Qualitative Analysis', 'Quantitative Analysis']
+    'Form 4': ['Advanced Organic Chemistry', 'Industrial Chemistry', 'Environmental Chemistry', 'Qualitative Analysis', 'Quantitative Analysis'],
   },
   Agriculture: {
     'Form 1': ['Introduction to Agriculture', 'Soil Science Basics', 'Crop Production Intro', 'Livestock Production Intro', 'Farm Tools'],
     'Form 2': ['Soil Fertility', 'Plant Nutrition', 'Pests and Diseases', 'Animal Nutrition', 'Agricultural Economics Intro'],
     'Form 3': ['Farm Power and Machinery', 'Irrigation', 'Forestry', 'Fisheries', 'Agribusiness Management'],
-    'Form 4': ['Agricultural Extension', 'Farm Planning', 'Sustainable Agriculture', 'Climate Change in Agriculture', 'Post-Harvest Technology']
-  }
-};
-
-export const TOPIC_PROGRESS_DATA = {
-  'Numbers': { questions: 12, progress: 80 },
-  'Algebraic Expressions': { questions: 8, progress: 60 },
-  'Linear Equations': { questions: 15, progress: 90 },
-  'Introduction to Biology': { questions: 10, progress: 70 },
-  'Classification': { questions: 5, progress: 40 },
-  'The Cell': { questions: 18, progress: 85 },
-  'Grammar Basics': { questions: 20, progress: 95 },
-  'Sentence Structure': { questions: 12, progress: 75 },
+    'Form 4': ['Agricultural Extension', 'Farm Planning', 'Sustainable Agriculture', 'Climate Change in Agriculture', 'Post-Harvest Technology'],
+  },
 };
 
 export const MOCK_LESSONS = {
@@ -67,17 +57,15 @@ export const MOCK_LESSONS = {
       'Understanding Natural, Whole, and Integers',
       'Mastering the four basic operations: Addition, Subtraction, Multiplication, and Division',
       'The concept of Place Value',
-      'Introduction to Decimals and Fractions'
+      'Introduction to Decimals and Fractions',
     ],
-    detailedContent: `
-      Mathematics begins with the study of numbers. Natural numbers (1, 2, 3...) are used for counting, while whole numbers include zero. Integers extend this to negative values.
+    detailedContent: `Mathematics begins with the study of numbers. Natural numbers (1, 2, 3...) are used for counting, while whole numbers include zero. Integers extend this to negative values.
       
-      Place value is crucial for understanding large numbers. For example, in the number 452, the '4' represents four hundreds, the '5' represents five tens, and the '2' represents two ones.
+Place value is crucial for understanding large numbers. For example, in the number 452, the '4' represents four hundreds, the '5' represents five tens, and the '2' represents two ones.
       
-      Operations follow specific rules, such as the Order of Operations (BODMAS/PEMDAS), which ensures consistent results when multiple operations are present in a single expression.
-    `,
+Operations follow specific rules, such as the Order of Operations (BODMAS/PEMDAS), which ensures consistent results when multiple operations are present in a single expression.`,
     summary: 'Numbers are tools we use to quantify the world. Understanding their properties and how to manipulate them is essential for all further mathematical study.',
-    estimatedTime: '15 mins'
+    estimatedTime: '15 mins',
   },
   'Introduction to Biology': {
     title: 'What is Biology?',
@@ -86,17 +74,15 @@ export const MOCK_LESSONS = {
       'Definition of Biology and its importance',
       'Characteristics of living organisms (MRS GREN)',
       'Branches of Biology (Botany, Zoology, Microbiology)',
-      'The Scientific Method in Biological research'
+      'The Scientific Method in Biological research',
     ],
-    detailedContent: `
-      Living things share several key characteristics, often remembered by the acronym MRS GREN: Movement, Respiration, Sensitivity, Growth, Reproduction, Excretion, and Nutrition.
+    detailedContent: `Living things share several key characteristics, often remembered by the acronym MRS GREN: Movement, Respiration, Sensitivity, Growth, Reproduction, Excretion, and Nutrition.
       
-      Biologists use various tools and techniques to study life, ranging from microscopes for looking at cells to satellite imaging for tracking animal migrations.
+Biologists use various tools and techniques to study life, ranging from microscopes for looking at cells to satellite imaging for tracking animal migrations.
       
-      Understanding biology helps us address global challenges like disease, food security, and environmental conservation.
-    `,
+Understanding biology helps us address global challenges like disease, food security, and environmental conservation.`,
     summary: 'Biology connects us to the natural world and helps us understand the complex processes that sustain life on Earth.',
-    estimatedTime: '12 mins'
+    estimatedTime: '12 mins',
   },
   'Grammar Basics': {
     title: 'Foundations of English Grammar',
@@ -105,16 +91,14 @@ export const MOCK_LESSONS = {
       'Parts of Speech (Nouns, Verbs, Adjectives, etc.)',
       'Sentence Structure: Subject and Predicate',
       'Punctuation basics',
-      'Common grammatical errors to avoid'
+      'Common grammatical errors to avoid',
     ],
-    detailedContent: `
-      Every sentence must have at least a subject and a verb. The subject is who or what the sentence is about, and the verb expresses the action or state of being.
+    detailedContent: `Every sentence must have at least a subject and a verb. The subject is who or what the sentence is about, and the verb expresses the action or state of being.
       
-      Nouns name people, places, things, or ideas. Verbs show action. Adjectives describe nouns, while adverbs describe verbs, adjectives, or other adverbs.
+Nouns name people, places, things, or ideas. Verbs show action. Adjectives describe nouns, while adverbs describe verbs, adjectives, or other adverbs.
       
-      Correct punctuation, such as commas and periods, helps clarify meaning and ensures that your writing is easy to read and understand.
-    `,
+Correct punctuation, such as commas and periods, helps clarify meaning and ensures that your writing is easy to read and understand.`,
     summary: 'Strong grammar skills are the key to clear and effective communication in English.',
-    estimatedTime: '10 mins'
-  }
+    estimatedTime: '10 mins',
+  },
 };
