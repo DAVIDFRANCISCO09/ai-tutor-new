@@ -17,7 +17,7 @@ function LandingPage() {
         </div>
       </nav>
 
-      <section className="flex flex-col items-center justify-center text-center py-24 px-4">
+      <section style={{ minHeight: '100vh' }} className="flex flex-col items-center justify-center text-center px-4">
         <h2 className="text-5xl font-bold text-gray-800 mb-6">
           Your Personal <span className="text-blue-600">AI Tutor</span>
         </h2>
@@ -37,7 +37,7 @@ function LandingPage() {
         </div>
       </section>
 
-      <section id="how-it-works" className="py-16 px-8 bg-white">
+      <section id="how-it-works" className="py-24 px-8 bg-white">
         <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">
           How It Works?
         </h3>

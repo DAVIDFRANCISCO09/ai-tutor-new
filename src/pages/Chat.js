@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Chat() {
   const [messages, setMessages] = useState([
@@ -6,11 +7,14 @@ function Chat() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [listening, setListening] = useState(false);
+  const navigate = useNavigate();
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  const sendMessage = async (messageText) => {
+    const textToSend = messageText || input;
+    if (!textToSend.trim()) return;
 
-    const userMessage = { role: 'user', content: input };
+    const userMessage = { role: 'user', content: textToSend };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     setInput('');
@@ -51,17 +55,50 @@ function Chat() {
     setLoading(false);
   };
 
+  const startListening = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Your browser does not support voice input. Please use Chrome!');
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+    setListening(true);
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setListening(false);
+      sendMessage(transcript);
+    };
+
+    recognition.onerror = () => {
+      setListening(false);
+      alert('Could not capture voice. Please try again!');
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+    };
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') sendMessage();
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+
       <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-blue-600">AI Tutor</h1>
-        <button className="text-gray-600 hover:text-red-500 font-medium">Logout</button>
+        <button onClick={() => navigate('/')} className="text-gray-600 hover:text-red-500 font-medium">Logout</button>
       </nav>
+
       <div className="flex-1 max-w-3xl w-full mx-auto p-4 flex flex-col">
+
         <div className="flex-1 bg-white rounded-2xl shadow-md p-6 mb-4 overflow-y-auto" style={{ maxHeight: '65vh' }}>
           {messages.map((msg, index) => (
             <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -78,7 +115,16 @@ function Chat() {
             </div>
           )}
         </div>
-        <div className="bg-white rounded-2xl shadow-md p-4 flex gap-3">
+
+        <div className="bg-white rounded-2xl shadow-md p-4 flex gap-3 items-center">
+          <button
+            onClick={startListening}
+            className={`p-3 rounded-full transition-all ${listening ? 'bg-red-500 text-white animate-pulse' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V21h2a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2h2v-1.06A8 8 0 0 1 4 12a1 1 0 0 1 1-1z"/>
+            </svg>
+          </button>
           <input
             type="text"
             placeholder="Ask your AI Tutor anything..."
@@ -88,13 +134,14 @@ function Chat() {
             className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
           />
           <button
-            onClick={sendMessage}
+            onClick={() => sendMessage()}
             disabled={loading}
             className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
           >
             Send
           </button>
         </div>
+
       </div>
     </div>
   );
