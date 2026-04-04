@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Chat from './pages/Chat';
+import ProgressPage from './components/myprogress/progresstracking';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/ProgressPage" element={<ProgressPage />} />
       </Routes>
     </BrowserRouter>
   );
