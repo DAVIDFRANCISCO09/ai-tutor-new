@@ -59,7 +59,7 @@ export const SetupPage = ({ onComplete, userName = 'there' }) => {
           </div>
         </motion.div>
 
-        {/* ── Greeting ── */}
+       
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -83,7 +83,7 @@ export const SetupPage = ({ onComplete, userName = 'there' }) => {
           className="bg-white rounded-3xl shadow-xl shadow-blue-900/8 border border-gray-100 overflow-hidden"
         >
 
-          {/* Question 1 — Form */}
+          {/* Question 1 a student choosing their Form */}
           <div className="px-6 pt-6 pb-5 border-b border-gray-50">
             <div className="flex items-center justify-between mb-4">
               <p className="text-xs font-black uppercase tracking-widest text-gray-400">
@@ -191,7 +191,7 @@ export const SetupPage = ({ onComplete, userName = 'there' }) => {
           </div>
         </motion.div>
 
-        {/* ── CTA button ── */}
+        {/* CTA button */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -228,7 +228,7 @@ export const SetupPage = ({ onComplete, userName = 'there' }) => {
           </button>
         </motion.div>
 
-        {/* ── Footer note ── */}
+        {/*Footer note */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
