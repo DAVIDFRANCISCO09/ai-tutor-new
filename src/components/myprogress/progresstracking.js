@@ -2,262 +2,286 @@ import React, { useState } from "react";
 
 const SUBJECTS = [
   {
-    name: "Biology", icon: "🧬", color: "#1D9E75", progress: 60,
+    name: "Agriculture", icon: "🌱", color: "#639922",
     topics: [
-      { name: "Cell Structure & Organisation", status: "done" },
-      { name: "Nutrition in Plants & Animals", status: "done" },
-      { name: "Transport in Plants & Animals", status: "in-progress" },
-      { name: "Respiration", status: "in-progress" },
-      { name: "Excretion", status: "todo" },
-      { name: "Coordination & Response", status: "todo" },
-      { name: "Reproduction", status: "todo" },
-      { name: "Ecology & Environment", status: "todo" },
+      { name: "Agro-forestry", score: 78 },
+      { name: "Agricultural Economics", score: null },
+      { name: "Crop Production", score: 90 },
+      { name: "Farm Structures & Equipment", score: null },
+      { name: "Irrigation & Water Management", score: 65 },
+      { name: "Livestock Management", score: 72 },
+      { name: "Pest & Disease Control", score: null },
+      { name: "Soil Science", score: 85 },
     ],
   },
   {
-    name: "Physics", icon: "⚡", color: "#378ADD", progress: 45,
+    name: "Biology", icon: "🧬", color: "#1D9E75",
     topics: [
-      { name: "Measurements & Units", status: "done" },
-      { name: "Forces & Motion", status: "done" },
-      { name: "Pressure", status: "in-progress" },
-      { name: "Energy, Work & Power", status: "in-progress" },
-      { name: "Waves & Sound", status: "todo" },
-      { name: "Light & Optics", status: "todo" },
-      { name: "Electricity & Magnetism", status: "todo" },
-      { name: "Thermal Physics", status: "todo" },
+      { name: "Cell Structure & Organisation", score: 88 },
+      { name: "Coordination & Response", score: null },
+      { name: "Ecology & Environment", score: null },
+      { name: "Excretion", score: null },
+      { name: "Nutrition in Plants & Animals", score: 72 },
+      { name: "Reproduction", score: null },
+      { name: "Respiration", score: 60 },
+      { name: "Transport in Plants & Animals", score: 55 },
     ],
   },
   {
-    name: "Chemistry", icon: "🧪", color: "#D85A30", progress: 50,
+    name: "Chemistry", icon: "🧪", color: "#D85A30",
     topics: [
-      { name: "Atomic Structure", status: "done" },
-      { name: "The Periodic Table", status: "done" },
-      { name: "Chemical Bonding", status: "done" },
-      { name: "Acids, Bases & Salts", status: "in-progress" },
-      { name: "Redox Reactions", status: "in-progress" },
-      { name: "Organic Chemistry", status: "todo" },
-      { name: "Electrochemistry", status: "todo" },
-      { name: "Industrial Chemistry", status: "todo" },
+      { name: "Acids, Bases & Salts", score: 65 },
+      { name: "Atomic Structure", score: 80 },
+      { name: "Chemical Bonding", score: 74 },
+      { name: "Electrochemistry", score: null },
+      { name: "Industrial Chemistry", score: null },
+      { name: "Organic Chemistry", score: null },
+      { name: "Redox Reactions", score: 58 },
+      { name: "The Periodic Table", score: 91 },
     ],
   },
   {
-    name: "English", icon: "📖", color: "#7C3AED", progress: 70,
+    name: "English", icon: "📖", color: "#7C3AED",
     topics: [
-      { name: "Reading Comprehension", status: "done" },
-      { name: "Summary Writing", status: "done" },
-      { name: "Essay Writing", status: "done" },
-      { name: "Grammar & Usage", status: "in-progress" },
-      { name: "Oral & Listening Skills", status: "in-progress" },
-      { name: "Literature: Prose", status: "todo" },
-      { name: "Literature: Poetry", status: "todo" },
-      { name: "Literature: Drama", status: "todo" },
+      { name: "Essay Writing", score: 82 },
+      { name: "Grammar & Usage", score: 70 },
+      { name: "Literature: Drama", score: null },
+      { name: "Literature: Poetry", score: null },
+      { name: "Literature: Prose", score: null },
+      { name: "Oral & Listening Skills", score: 68 },
+      { name: "Reading Comprehension", score: 88 },
+      { name: "Summary Writing", score: 76 },
     ],
   },
   {
-    name: "Agriculture", icon: "🌱", color: "#639922", progress: 40,
+    name: "Mathematics", icon: "📐", color: "#BA7517",
     topics: [
-      { name: "Soil Science", status: "done" },
-      { name: "Crop Production", status: "done" },
-      { name: "Irrigation & Water Management", status: "in-progress" },
-      { name: "Livestock Management", status: "in-progress" },
-      { name: "Agricultural Economics", status: "todo" },
-      { name: "Pest & Disease Control", status: "todo" },
-      { name: "Farm Structures & Equipment", status: "todo" },
-      { name: "Agro-forestry", status: "todo" },
+      { name: "Algebra", score: 76 },
+      { name: "Financial Mathematics", score: null },
+      { name: "Functions & Graphs", score: null },
+      { name: "Geometry & Mensuration", score: 63 },
+      { name: "Numbers & Arithmetic", score: 90 },
+      { name: "Statistics & Probability", score: null },
+      { name: "Trigonometry", score: 55 },
+      { name: "Vectors & Transformations", score: null },
     ],
   },
   {
-    name: "Mathematics", icon: "📐", color: "#BA7517", progress: 55,
+    name: "Physics", icon: "⚡", color: "#378ADD",
     topics: [
-      { name: "Numbers & Arithmetic", status: "done" },
-      { name: "Algebra", status: "done" },
-      { name: "Geometry & Mensuration", status: "in-progress" },
-      { name: "Trigonometry", status: "in-progress" },
-      { name: "Statistics & Probability", status: "todo" },
-      { name: "Vectors & Transformations", status: "todo" },
-      { name: "Functions & Graphs", status: "todo" },
-      { name: "Financial Mathematics", status: "todo" },
+      { name: "Electricity & Magnetism", score: null },
+      { name: "Energy, Work & Power", score: 62 },
+      { name: "Forces & Motion", score: 58 },
+      { name: "Light & Optics", score: null },
+      { name: "Measurements & Units", score: 95 },
+      { name: "Pressure", score: 70 },
+      { name: "Thermal Physics", score: null },
+      { name: "Waves & Sound", score: null },
     ],
   },
 ];
 
-const QUIZ_HISTORY = [
-  { subject: "Biology", topic: "Cell Structure & Organisation", score: 88, date: "Apr 3" },
-  { subject: "Mathematics", topic: "Algebra", score: 76, date: "Apr 2" },
-  { subject: "English", topic: "Essay Writing", score: 82, date: "Apr 1" },
-  { subject: "Chemistry", topic: "Acids, Bases & Salts", score: 65, date: "Mar 31" },
-  { subject: "Physics", topic: "Forces & Motion", score: 58, date: "Mar 30" },
-  { subject: "Agriculture", topic: "Crop Production", score: 90, date: "Mar 29" },
-  { subject: "Biology", topic: "Nutrition in Plants & Animals", score: 72, date: "Mar 28" },
-];
-
-function TopicBadge({ status }) {
-  const map = {
-    done: { label: "Done", bg: "#0f3d20", color: "#4ade80" },
-    "in-progress": { label: "In Progress", bg: "#0c2a4a", color: "#60a5fa" },
-    todo: { label: "To Do", bg: "#1a2235", color: "#64748b" },
-  };
-  const s = map[status] || map.todo;
+function ScoreBar({ score }) {
+  if (score === null) {
+    return (
+      <span style={{ fontSize: 12, color: "#94a3b8", fontStyle: "italic" }}>Not attempted</span>
+    );
+  }
+  const color = score >= 80 ? "#1D9E75" : score >= 65 ? "#BA7517" : "#D85A30";
+  const textColor = score >= 80 ? "#166534" : score >= 65 ? "#854f0b" : "#991b1b";
+  const bg = score >= 80 ? "#dcfce7" : score >= 65 ? "#fef9c3" : "#fee2e2";
   return (
-    <span style={{ fontSize: 11, fontWeight: 600, padding: "3px 8px", borderRadius: 20, background: s.bg, color: s.color }}>
-      {s.label}
-    </span>
-  );
-}
-
-function ScorePill({ score }) {
-  const s = score >= 80
-    ? { bg: "#0f3d20", color: "#4ade80" }
-    : score >= 65
-    ? { bg: "#3a2500", color: "#fbbf24" }
-    : { bg: "#3d0f0f", color: "#f87171" };
-  return (
-    <span style={{ fontSize: 12, fontWeight: 600, padding: "3px 10px", borderRadius: 20, background: s.bg, color: s.color }}>
-      {score}%
-    </span>
-  );
-}
-
-function BarChart({ quizzes }) {
-  const reversed = [...quizzes].reverse();
-  return (
-    <div style={{ padding: "16px 0" }}>
-      {reversed.map((q, i) => (
-        <div key={i} style={{ marginBottom: 14 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#94a3b8", marginBottom: 6 }}>
-            <span>{q.topic} — {q.subject}</span>
-            <span style={{ fontWeight: 600, color: q.score >= 80 ? "#4ade80" : q.score >= 65 ? "#fbbf24" : "#f87171" }}>
-              {q.score}%
-            </span>
-          </div>
-          <div style={{ height: 8, background: "#1a2235", borderRadius: 99, overflow: "hidden" }}>
-            <div style={{
-              height: "100%",
-              width: `${q.score}%`,
-              background: q.score >= 80 ? "#1D9E75" : q.score >= 65 ? "#BA7517" : "#D85A30",
-              borderRadius: 99,
-              transition: "width 0.6s ease"
-            }} />
-          </div>
-        </div>
-      ))}
+    <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, justifyContent: "flex-end" }}>
+      <div style={{ width: 100, height: 6, background: "#e2e8f0", borderRadius: 99, overflow: "hidden" }}>
+        <div style={{ height: "100%", width: `${score}%`, background: color, borderRadius: 99 }} />
+      </div>
+      <span style={{ fontSize: 12, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: bg, color: textColor, minWidth: 40, textAlign: "center" }}>
+        {score}%
+      </span>
     </div>
   );
 }
 
-function SubjectCard({ subject }) {
+function SubjectDetail({ subject, onBack }) {
+  const attempted = subject.topics.filter(t => t.score !== null);
+  const avgScore = attempted.length > 0
+    ? Math.round(attempted.reduce((a, t) => a + t.score, 0) / attempted.length)
+    : null;
+
   return (
-    <div style={{ background: "#111827", border: "1px solid #1f2d45", borderRadius: 12, padding: 16 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 14, color: "#e2e8f0" }}>
-          <span style={{ fontSize: 18 }}>{subject.icon}</span>
-          {subject.name}
+    <div>
+      {/* Back button */}
+      <button
+        onClick={onBack}
+        style={{
+          background: "#0a1628", color: "#fff", border: "none",
+          borderRadius: 8, padding: "8px 16px", fontSize: 13,
+          fontWeight: 600, cursor: "pointer", marginBottom: 24,
+          display: "flex", alignItems: "center", gap: 6
+        }}
+      >
+        ← Back to Subjects
+      </button>
+
+      {/* Subject header */}
+      <div style={{
+        background: "#0a1628", borderRadius: 14, padding: "24px",
+        marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center"
+      }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+            <span style={{ fontSize: 28 }}>{subject.icon}</span>
+            <h2 style={{ fontSize: 22, fontWeight: 700, color: "#fff", margin: 0 }}>{subject.name}</h2>
+          </div>
+          <p style={{ color: "#94a3b8", fontSize: 13, margin: 0 }}>
+            {attempted.length} of {subject.topics.length} topics attempted
+          </p>
         </div>
-        <span style={{ fontSize: 18, fontWeight: 700, color: subject.color }}>{subject.progress}%</span>
+        {avgScore !== null && (
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 36, fontWeight: 800, color: subject.color }}>{avgScore}%</div>
+            <div style={{ fontSize: 12, color: "#94a3b8" }}>average score</div>
+          </div>
+        )}
       </div>
-      <div style={{ height: 5, background: "#1a2235", borderRadius: 99, overflow: "hidden", marginBottom: 12 }}>
-        <div style={{ height: "100%", width: `${subject.progress}%`, background: subject.color, borderRadius: 99 }} />
-      </div>
-      {subject.topics.map((t, i) => (
-        <div key={t.name} style={{
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-          padding: "7px 0", fontSize: 13, color: "#94a3b8",
-          borderBottom: i < subject.topics.length - 1 ? "1px solid #1f2d45" : "none"
-        }}>
-          <span>{t.name}</span>
-          <TopicBadge status={t.status} />
+
+      {/* Topics list */}
+      <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, overflow: "hidden" }}>
+        <div style={{ padding: "12px 20px", background: "#f8fafc", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>Topic</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>Quiz Result</span>
         </div>
-      ))}
+        {subject.topics.map((t, i) => (
+          <div key={t.name} style={{
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+            padding: "14px 20px",
+            borderBottom: i < subject.topics.length - 1 ? "1px solid #f1f5f9" : "none",
+            background: i % 2 === 0 ? "#fff" : "#fafafa"
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{
+                width: 8, height: 8, borderRadius: "50%",
+                background: t.score === null ? "#cbd5e1" : t.score >= 80 ? "#1D9E75" : t.score >= 65 ? "#BA7517" : "#D85A30"
+              }} />
+              <span style={{ fontSize: 14, color: "#1e293b", fontWeight: 500 }}>{t.name}</span>
+            </div>
+            <ScoreBar score={t.score} />
+          </div>
+        ))}
+      </div>
+
+      {/* Legend */}
+      <div style={{ display: "flex", gap: 20, marginTop: 16, flexWrap: "wrap" }}>
+        {[
+          { color: "#1D9E75", bg: "#dcfce7", text: "#166534", label: "80–100% Excellent" },
+          { color: "#BA7517", bg: "#fef9c3", text: "#854f0b", label: "65–79% Good" },
+          { color: "#D85A30", bg: "#fee2e2", text: "#991b1b", label: "Below 65% Needs Work" },
+        ].map(l => (
+          <div key={l.label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 10, height: 10, borderRadius: "50%", background: l.color }} />
+            <span style={{ fontSize: 12, color: "#64748b" }}>{l.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 export default function ProgressPage() {
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedSubject, setSelectedSubject] = useState(null);
 
-  const filteredSubjects = activeFilter === "all" ? SUBJECTS : SUBJECTS.filter(s => s.name === activeFilter);
-  const filteredQuizzes = activeFilter === "all" ? QUIZ_HISTORY : QUIZ_HISTORY.filter(q => q.subject === activeFilter);
-
-  const totalProgress = Math.round(SUBJECTS.reduce((a, s) => a + s.progress, 0) / SUBJECTS.length);
-  const totalDone = SUBJECTS.flatMap(s => s.topics).filter(t => t.status === "done").length;
+  const totalDone = SUBJECTS.flatMap(s => s.topics).filter(t => t.score !== null).length;
   const totalTopics = SUBJECTS.flatMap(s => s.topics).length;
-  const avgScore = Math.round(QUIZ_HISTORY.reduce((a, q) => a + q.score, 0) / QUIZ_HISTORY.length);
+  const allScores = SUBJECTS.flatMap(s => s.topics).filter(t => t.score !== null).map(t => t.score);
+  const avgScore = allScores.length > 0 ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length) : 0;
+
+  if (selectedSubject) {
+    return (
+      <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 800, margin: "0 auto", padding: "24px 16px", background: "#fff", minHeight: "100vh" }}>
+        <SubjectDetail subject={selectedSubject} onBack={() => setSelectedSubject(null)} />
+      </div>
+    );
+  }
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 900, margin: "0 auto", padding: "24px 16px", background: "#0a0e1a", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 800, margin: "0 auto", padding: "24px 16px", background: "#fff", minHeight: "100vh" }}>
 
-      {/* Header */}
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#e2e8f0" }}>My Progress</h1>
-        <p style={{ color: "#64748b", fontSize: 14, marginTop: 4 }}>Malawian Secondary School Syllabus — Track your learning</p>
+      {/* Page Title */}
+      <div style={{ marginBottom: 28 }}>
+        <h1 style={{ fontSize: 36, fontWeight: 800, color: "#0a1628", margin: 0 }}>My Progress</h1>
+        <p style={{ color: "#64748b", fontSize: 14, marginTop: 6 }}>Malawian Secondary School Syllabus — Click a subject to view your quiz results</p>
       </div>
 
-      {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 24 }}>
+      {/* Summary Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginBottom: 32 }}>
         {[
-          { label: "Overall Progress", value: `${totalProgress}%`, sub: "6 subjects" },
-          { label: "Topics Completed", value: `${totalDone} / ${totalTopics}`, sub: `${totalTopics - totalDone} remaining` },
-          { label: "Avg Quiz Score", value: `${avgScore}%`, sub: `${QUIZ_HISTORY.length} quizzes taken` },
-          { label: "Study Streak", value: "7 days", sub: "personal best: 12" },
+          { label: "Subjects", value: SUBJECTS.length },
+          { label: "Topics Attempted", value: `${totalDone} / ${totalTopics}` },
+          { label: "Avg Quiz Score", value: `${avgScore}%` },
+          { label: "Study Streak", value: "7 days" },
         ].map(s => (
-          <div key={s.label} style={{ background: "#111827", borderRadius: 10, padding: "14px 16px", border: "1px solid #1f2d45" }}>
+          <div key={s.label} style={{ background: "#0a1628", borderRadius: 12, padding: "16px" }}>
             <p style={{ fontSize: 11, color: "#64748b", marginBottom: 4, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>{s.label}</p>
-            <p style={{ fontSize: 22, fontWeight: 700, color: "#e2e8f0" }}>{s.value}</p>
-            <p style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{s.sub}</p>
+            <p style={{ fontSize: 24, fontWeight: 800, color: "#fff", margin: 0 }}>{s.value}</p>
           </div>
         ))}
       </div>
 
-      {/* Filters */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
-        {["all", ...SUBJECTS.map(s => s.name)].map(f => (
-          <button key={f} onClick={() => setActiveFilter(f)} style={{
-            padding: "5px 14px", borderRadius: 20, border: "1px solid",
-            borderColor: activeFilter === f ? "#378ADD" : "#1f2d45",
-            background: activeFilter === f ? "#0c2a4a" : "transparent",
-            color: activeFilter === f ? "#60a5fa" : "#64748b",
-            fontSize: 13, fontWeight: 500, cursor: "pointer"
-          }}>
-            {f === "all" ? "All Subjects" : f}
-          </button>
-        ))}
-      </div>
+      {/* Subjects Label */}
+      <h2 style={{ fontSize: 18, fontWeight: 700, color: "#0a1628", marginBottom: 14 }}>Subjects</h2>
 
-      {/* Subject Cards */}
-      <p style={{ fontSize: 14, fontWeight: 600, color: "#e2e8f0", marginBottom: 12 }}>Topic Completion</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12, marginBottom: 20 }}>
-        {filteredSubjects.map(s => <SubjectCard key={s.name} subject={s} />)}
-      </div>
+      {/* Subject Buttons */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {SUBJECTS.map(s => {
+          const attempted = s.topics.filter(t => t.score !== null).length;
+          const subjectAvg = attempted > 0
+            ? Math.round(s.topics.filter(t => t.score !== null).reduce((a, t) => a + t.score, 0) / attempted)
+            : null;
+          const progress = Math.round((attempted / s.topics.length) * 100);
 
-      {/* Score Chart */}
-      <div style={{ background: "#111827", border: "1px solid #1f2d45", borderRadius: 12, padding: 16, marginBottom: 16 }}>
-        <p style={{ fontSize: 14, fontWeight: 600, color: "#e2e8f0", marginBottom: 4 }}>Quiz Score History</p>
-        <p style={{ fontSize: 12, color: "#64748b", marginBottom: 8 }}>Your scores from most recent quizzes</p>
-        <BarChart quizzes={filteredQuizzes} />
-      </div>
-
-      {/* Quiz List */}
-      <div style={{ background: "#111827", border: "1px solid #1f2d45", borderRadius: 12, padding: 16 }}>
-        <p style={{ fontSize: 14, fontWeight: 600, color: "#e2e8f0", marginBottom: 12 }}>Recent Quiz Results</p>
-        {filteredQuizzes.length === 0 ? (
-          <p style={{ color: "#64748b", fontSize: 13, textAlign: "center", padding: "16px 0" }}>No quizzes for this subject yet.</p>
-        ) : (
-          filteredQuizzes.map((q, i) => (
-            <div key={i} style={{
-              display: "flex", justifyContent: "space-between", alignItems: "center",
-              padding: "11px 0",
-              borderBottom: i < filteredQuizzes.length - 1 ? "1px solid #1f2d45" : "none"
-            }}>
-              <div>
-                <p style={{ fontWeight: 600, fontSize: 14, color: "#e2e8f0" }}>{q.subject}</p>
-                <p style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>{q.topic} · {q.date}</p>
+          return (
+            <button
+              key={s.name}
+              onClick={() => setSelectedSubject(s)}
+              style={{
+                background: "#0a1628", border: "none", borderRadius: 12,
+                padding: "18px 20px", cursor: "pointer", textAlign: "left",
+                transition: "transform 0.15s, opacity 0.15s",
+                display: "flex", justifyContent: "space-between", alignItems: "center"
+              }}
+              onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
+              onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 10,
+                  background: s.color + "22",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22
+                }}>
+                  {s.icon}
+                </div>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{s.name}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 80, height: 4, background: "#1a2235", borderRadius: 99, overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${progress}%`, background: s.color, borderRadius: 99 }} />
+                    </div>
+                    <span style={{ fontSize: 12, color: "#64748b" }}>{attempted}/{s.topics.length} topics done</span>
+                  </div>
+                </div>
               </div>
-              <ScorePill score={q.score} />
-            </div>
-          ))
-        )}
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                {subjectAvg !== null && (
+                  <span style={{
+                    fontSize: 18, fontWeight: 800, color: s.color
+                  }}>{subjectAvg}%</span>
+                )}
+                <span style={{ color: "#64748b", fontSize: 18 }}>›</span>
+              </div>
+            </button>
+          );
+        })}
       </div>
-
     </div>
   );
 }
