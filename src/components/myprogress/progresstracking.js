@@ -114,7 +114,7 @@ function SubjectDetail({ subject, onBack }) {
       <button
         onClick={onBack}
         style={{
-          background: "#0a1628", color: "#fff", border: "none",
+          background: "#1a3a6b", color: "#fff", border: "none",
           borderRadius: 8, padding: "8px 16px", fontSize: 13,
           fontWeight: 600, cursor: "pointer", marginBottom: 24,
           display: "flex", alignItems: "center", gap: 6
@@ -125,7 +125,7 @@ function SubjectDetail({ subject, onBack }) {
 
       {/* Subject header */}
       <div style={{
-        background: "#0a1628", borderRadius: 14, padding: "24px",
+        background: "#1a3a6b", borderRadius: 14, padding: "24px",
         marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center"
       }}>
         <div>
@@ -208,7 +208,7 @@ export default function ProgressPage() {
 
       {/* Page Title */}
       <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 36, fontWeight: 800, color: "#0a1628", margin: 0 }}>My Progress</h1>
+        <h1 style={{ fontSize: 36, fontWeight: 800, color: "#1a3a6b", margin: 0 }}>My Progress</h1>
         <p style={{ color: "#64748b", fontSize: 14, marginTop: 6 }}>Malawian Secondary School Syllabus — Click a subject to view your quiz results</p>
       </div>
 
@@ -220,7 +220,7 @@ export default function ProgressPage() {
           { label: "Avg Quiz Score", value: `${avgScore}%` },
           { label: "Study Streak", value: "7 days" },
         ].map(s => (
-          <div key={s.label} style={{ background: "#0a1628", borderRadius: 12, padding: "16px" }}>
+          <div key={s.label} style={{ background: "#1a3a6b", borderRadius: 12, padding: "16px" }}>
             <p style={{ fontSize: 11, color: "#64748b", marginBottom: 4, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>{s.label}</p>
             <p style={{ fontSize: 24, fontWeight: 800, color: "#fff", margin: 0 }}>{s.value}</p>
           </div>
@@ -228,7 +228,7 @@ export default function ProgressPage() {
       </div>
 
       {/* Subjects Label */}
-      <h2 style={{ fontSize: 18, fontWeight: 700, color: "#0a1628", marginBottom: 14 }}>Subjects</h2>
+      <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1a3a6b", marginBottom: 14 }}>Subjects</h2>
 
       {/* Subject Buttons */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -244,7 +244,7 @@ export default function ProgressPage() {
               key={s.name}
               onClick={() => setSelectedSubject(s)}
               style={{
-                background: "#0a1628", border: "none", borderRadius: 12,
+                background: "#1a3a6b", border: "none", borderRadius: 12,
                 padding: "18px 20px", cursor: "pointer", textAlign: "left",
                 transition: "transform 0.15s, opacity 0.15s",
                 display: "flex", justifyContent: "space-between", alignItems: "center"
