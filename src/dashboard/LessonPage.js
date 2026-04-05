@@ -24,7 +24,7 @@ export const LessonPage = () => {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] pb-20">
-      {/* Header — its own back-button nav, no hamburger needed here */}
+      {/* lesson Header; its own back button navigation */}
       <div className="bg-white px-5 py-4 flex items-center gap-4 border-b border-gray-100 sticky top-0 z-30 shadow-sm">
         <button
           onClick={() => navigate('/')}
@@ -45,7 +45,7 @@ export const LessonPage = () => {
 
       <div className="max-w-3xl mx-auto px-5 py-8 space-y-8">
 
-        {/* Introduction */}
+        {/* lesson introduction */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
           <div className="flex items-center gap-2 text-[#1a365d]">
             <Lightbulb size={18} />
@@ -54,7 +54,7 @@ export const LessonPage = () => {
           <p className="text-gray-600 leading-relaxed text-base italic">"{lesson.introduction}"</p>
         </motion.section>
 
-        {/* Learning Objectives */}
+        {/* List of Learning Objectives */}
         <motion.section
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4"
@@ -75,7 +75,7 @@ export const LessonPage = () => {
           </ul>
         </motion.section>
 
-        {/* Lesson Content */}
+        {/* choosen subject's Lesson Content */}
         <motion.section
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="space-y-3"
@@ -100,7 +100,7 @@ export const LessonPage = () => {
           <p className="text-blue-900 leading-relaxed text-sm font-medium">{lesson.summary}</p>
         </motion.section>
 
-        {/* Actions */}
+        {/* student's Actions after learning */}
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
           className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"
