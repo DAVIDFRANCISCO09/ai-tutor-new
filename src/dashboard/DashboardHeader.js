@@ -95,7 +95,7 @@ export const DashboardHeader = ({
             ))}
           </nav>
 
-          {/* Right — user info + logout (desktop) + hamburger (mobile) */}
+          {/* Right, user info and logout (desktop) and also hamburger (mobile) */}
           <div className="flex items-center gap-3">
             {/* User info — desktop only */}
             <div className="hidden xl:flex flex-col items-end">
