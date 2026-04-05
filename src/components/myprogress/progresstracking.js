@@ -253,13 +253,7 @@ export default function ProgressPage() {
               onMouseLeave={e => e.currentTarget.style.opacity = "1"}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{
-                  width: 44, height: 44, borderRadius: 10,
-                  background: s.color + "22",
-                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22
-                }}>
-                  {s.icon}
-                </div>
+                
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{s.name}</div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
