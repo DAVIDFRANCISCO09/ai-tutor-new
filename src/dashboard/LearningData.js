@@ -2,20 +2,20 @@ import React from 'react';
 import { Microscope, FlaskConical, Zap, Calculator, Sprout, Languages } from 'lucide-react';
 
 export const SUBJECTS = [
-  { name: 'Biology',     progress: 70, icon: <Microscope size={20} />,    questionsAsked: 24, topicsExplored: 8  },
-  { name: 'Chemistry',   progress: 55, icon: <FlaskConical size={20} />,  questionsAsked: 15, topicsExplored: 4  },
-  { name: 'Physics',     progress: 65, icon: <Zap size={20} />,           questionsAsked: 18, topicsExplored: 6  },
-  { name: 'Mathematics', progress: 85, icon: <Calculator size={20} />,    questionsAsked: 32, topicsExplored: 12 },
-  { name: 'Agriculture', progress: 40, icon: <Sprout size={20} />,        questionsAsked: 10, topicsExplored: 3  },
-  { name: 'English',     progress: 75, icon: <Languages size={20} />,     questionsAsked: 28, topicsExplored: 10 },
+  { name: 'Biology',     progress: 70, icon: <Microscope size={20} />,     },
+  { name: 'Chemistry',   progress: 55, icon: <FlaskConical size={20} />,    },
+  { name: 'Physics',     progress: 65, icon: <Zap size={20} />,           },
+  { name: 'Mathematics', progress: 85, icon: <Calculator size={20} />,     },
+  { name: 'Agriculture', progress: 40, icon: <Sprout size={20} />,          },
+  { name: 'English',     progress: 75, icon: <Languages size={20} />,     },
 ];
 
 export const TOPICS_DATA = {
   Mathematics: {
     'Form 1': ['Numbers', 'Algebraic Expressions', 'Linear Equations', 'Geometry Basics', 'Statistics'],
     'Form 2': ['Quadratic Equations', 'Circles', 'Trigonometry', 'Probability', 'Matrices'],
-    'Form 3': ['Functions', 'Coordinate Geometry', 'Vectors', 'Calculus Intro', 'Linear Programming'],
-    'Form 4': ['Advanced Calculus', 'Complex Numbers', 'Differential Equations', 'Mechanics', 'Advanced Statistics'],
+    'Form 3': ['Functions', 'Coordinate Geometry', 'Vectors', 'Linear Programming'],
+    'Form 4': ['Sets', 'Complex Numbers', 'Linear Equations', 'Mechanics', 'Probability'],
   },
   Physics: {
     'Form 1': ['Introduction to Physics', 'Measurement', 'Force and Motion', 'Energy', 'Pressure'],
