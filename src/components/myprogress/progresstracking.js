@@ -130,7 +130,6 @@ function SubjectDetail({ subject, onBack }) {
       }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-            <span style={{ fontSize: 28 }}>{subject.icon}</span>
             <h2 style={{ fontSize: 22, fontWeight: 700, color: "#fff", margin: 0 }}>{subject.name}</h2>
           </div>
           <p style={{ color: "#94a3b8", fontSize: 13, margin: 0 }}>
