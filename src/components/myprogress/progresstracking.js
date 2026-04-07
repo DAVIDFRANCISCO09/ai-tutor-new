@@ -81,23 +81,26 @@ const SUBJECTS = [
   },
 ];
 
-function ScoreBar({ score, color }) {
+// ---------- CHANGED: ScoreBar uses a fixed dark color (black) ----------
+function ScoreBar({ score }) {
   if (score === null) {
     return (
       <span style={{ fontSize: 12, color: "#94a3b8", fontStyle: "italic" }}>Not attempted</span>
     );
   }
+  const barColor = "#1e293b";   // black/dark gray – change if needed
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, justifyContent: "flex-end" }}>
       <div style={{ width: 100, height: 6, background: "#e2e8f0", borderRadius: 99, overflow: "hidden" }}>
-        <div style={{ height: "100%", width: `${score}%`, background: color, borderRadius: 99 }} />
+        <div style={{ height: "100%", width: `${score}%`, background: barColor, borderRadius: 99 }} />
       </div>
-      <span style={{ fontSize: 12, fontWeight: 700, color: color, minWidth: 40, textAlign: "right" }}>
+      <span style={{ fontSize: 12, fontWeight: 700, color: barColor, minWidth: 40, textAlign: "right" }}>
         {score}%
       </span>
     </div>
   );
 }
+// -----------------------------------------------------------------------
 
 function SubjectDetail({ subject, onBack }) {
   const attempted = subject.topics.filter(t => t.score !== null);
@@ -162,7 +165,8 @@ function SubjectDetail({ subject, onBack }) {
               }} />
               <span style={{ fontSize: 14, color: "#1e293b", fontWeight: 500 }}>{t.name}</span>
             </div>
-            <ScoreBar score={t.score} color={subject.color} />
+            {/* CHANGED: removed color prop, now ScoreBar uses its own black color */}
+            <ScoreBar score={t.score} />
           </div>
         ))}
       </div>
