@@ -81,14 +81,14 @@ const SUBJECTS = [
   },
 ];
 
-// ---------- CHANGED: ScoreBar uses a fixed dark color (black) ----------
+// ScoreBar uses a fixed dark color (black) for both bar and text
 function ScoreBar({ score }) {
   if (score === null) {
     return (
       <span style={{ fontSize: 12, color: "#94a3b8", fontStyle: "italic" }}>Not attempted</span>
     );
   }
-  const barColor = "#1e293b";   // black/dark gray – change if needed
+  const barColor = "#1e293b";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, justifyContent: "flex-end" }}>
       <div style={{ width: 100, height: 6, background: "#e2e8f0", borderRadius: 99, overflow: "hidden" }}>
@@ -100,7 +100,6 @@ function ScoreBar({ score }) {
     </div>
   );
 }
-// -----------------------------------------------------------------------
 
 function SubjectDetail({ subject, onBack }) {
   const attempted = subject.topics.filter(t => t.score !== null);
@@ -136,7 +135,8 @@ function SubjectDetail({ subject, onBack }) {
         </div>
         {avgScore !== null && (
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 36, fontWeight: 800, color: subject.color }}>{avgScore}%</div>
+            {/* CHANGED: overall percentage now white, matching subject name */}
+            <div style={{ fontSize: 36, fontWeight: 800, color: "#fff" }}>{avgScore}%</div>
             <div style={{ fontSize: 12, color: "#94a3b8" }}>average score</div>
           </div>
         )}
@@ -165,7 +165,6 @@ function SubjectDetail({ subject, onBack }) {
               }} />
               <span style={{ fontSize: 14, color: "#1e293b", fontWeight: 500 }}>{t.name}</span>
             </div>
-            {/* CHANGED: removed color prop, now ScoreBar uses its own black color */}
             <ScoreBar score={t.score} />
           </div>
         ))}
@@ -194,7 +193,6 @@ export default function ProgressPage() {
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 800, margin: "0 auto", padding: "24px 16px", background: "#fff", minHeight: "100vh" }}>
-
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontSize: 36, fontWeight: 800, color: "#1a3a6b", margin: 0 }}>My Progress</h1>
         <p style={{ color: "#64748b", fontSize: 14, marginTop: 6 }}>Malawian Secondary School Syllabus — Click a subject to view your quiz results</p>
