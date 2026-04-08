@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Home() {
+function LandingPage() {
   const navigate = useNavigate();
 
   return (
@@ -17,7 +17,7 @@ function Home() {
         </div>
       </nav>
 
-      <section className="flex flex-col items-center justify-center text-center py-24 px-4">
+      <section style={{ minHeight: '100vh' }} className="flex flex-col items-center justify-center text-center px-4">
         <h2 className="text-5xl font-bold text-gray-800 mb-6">
           Your Personal <span className="text-blue-600">AI Tutor</span>
         </h2>
@@ -26,44 +26,46 @@ function Home() {
           and personalized help from your AI-powered tutor.
         </p>
         <div className="flex gap-4">
-          <button onClick={() => navigate('/login')} className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-700">
+          <button onClick={() => navigate('/register')} className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-700">
             Start Learning
           </button>
-          <button className="border border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-50">
+          <button
+            onClick={() => document.getElementById('how-it-works').scrollIntoView({ behavior: 'smooth' })}
+            className="border border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-50">
             Learn More
           </button>
         </div>
       </section>
 
-      <section className="py-16 px-8 bg-white">
+      <section id="how-it-works" className="py-24 px-8 bg-white">
         <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">
-          Why Choose AI Tutor?
+          How It Works?
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <div className="bg-blue-50 p-6 rounded-xl text-center">
-            <div className="text-4xl mb-4">🤖</div>
-            <h4 className="text-xl font-bold text-gray-800 mb-2">AI Powered</h4>
-            <p className="text-gray-500">Get instant answers powered by advanced AI technology.</p>
+            <div className="text-4xl mb-4">1️⃣</div>
+            <h4 className="text-xl font-bold text-gray-800 mb-2">Create Account</h4>
+            <p className="text-gray-500">Sign up for free and set up your personal profile.</p>
           </div>
           <div className="bg-blue-50 p-6 rounded-xl text-center">
-            <div className="text-4xl mb-4">📚</div>
-            <h4 className="text-xl font-bold text-gray-800 mb-2">Any Subject</h4>
-            <p className="text-gray-500">Math, Science, History, Languages — learn anything you need.</p>
+            <div className="text-4xl mb-4">2️⃣</div>
+            <h4 className="text-xl font-bold text-gray-800 mb-2">Ask Questions</h4>
+            <p className="text-gray-500">Type any question and get instant AI powered answers.</p>
           </div>
           <div className="bg-blue-50 p-6 rounded-xl text-center">
-            <div className="text-4xl mb-4">⚡</div>
-            <h4 className="text-xl font-bold text-gray-800 mb-2">Instant Help</h4>
-            <p className="text-gray-500">Available 24/7, get help whenever you need it.</p>
+            <div className="text-4xl mb-4">3️⃣</div>
+            <h4 className="text-xl font-bold text-gray-800 mb-2">Learn and Grow</h4>
+            <p className="text-gray-500">Track your progress and improve your knowledge every day.</p>
           </div>
         </div>
       </section>
 
       <footer className="bg-gray-800 text-white text-center py-6">
-        <p>2024 AI Tutor. All rights reserved.</p>
+        <p>2026 AI Tutor. All rights reserved.</p>
       </footer>
 
     </div>
   );
 }
 
-export default Home;
+export default LandingPage;
