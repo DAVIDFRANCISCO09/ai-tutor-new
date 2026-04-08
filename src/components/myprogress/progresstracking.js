@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const SUBJECTS = [
   {
-    name: "Agriculture", icon: "🌱", color: "#639922",
+    name: "Agriculture", color: "#639922",
     topics: [
       { name: "Agro-forestry", score: 78 },
       { name: "Agricultural Economics", score: null },
@@ -15,7 +15,7 @@ const SUBJECTS = [
     ],
   },
   {
-    name: "Biology", icon: "🧬", color: "#1D9E75",
+    name: "Biology", color: "#1D9E75",
     topics: [
       { name: "Cell Structure & Organisation", score: 88 },
       { name: "Coordination & Response", score: null },
@@ -28,7 +28,7 @@ const SUBJECTS = [
     ],
   },
   {
-    name: "Chemistry", icon: "🧪", color: "#D85A30",
+    name: "Chemistry", color: "#D85A30",
     topics: [
       { name: "Acids, Bases & Salts", score: 65 },
       { name: "Atomic Structure", score: 80 },
@@ -41,7 +41,7 @@ const SUBJECTS = [
     ],
   },
   {
-    name: "English", icon: "📖", color: "#7C3AED",
+    name: "English", color: "#7C3AED",
     topics: [
       { name: "Essay Writing", score: 82 },
       { name: "Grammar & Usage", score: 70 },
@@ -54,7 +54,7 @@ const SUBJECTS = [
     ],
   },
   {
-    name: "Mathematics", icon: "📐", color: "#BA7517",
+    name: "Mathematics", color: "#BA7517",
     topics: [
       { name: "Algebra", score: 76 },
       { name: "Financial Mathematics", score: null },
@@ -67,7 +67,7 @@ const SUBJECTS = [
     ],
   },
   {
-    name: "Physics", icon: "⚡", color: "#378ADD",
+    name: "Physics", color: "#378ADD",
     topics: [
       { name: "Electricity & Magnetism", score: null },
       { name: "Energy, Work & Power", score: 62 },
@@ -81,7 +81,6 @@ const SUBJECTS = [
   },
 ];
 
-// ScoreBar uses a fixed dark color (black) for both bar and text
 function ScoreBar({ score }) {
   if (score === null) {
     return (
@@ -135,7 +134,6 @@ function SubjectDetail({ subject, onBack }) {
         </div>
         {avgScore !== null && (
           <div style={{ textAlign: "center" }}>
-            {/* CHANGED: overall percentage now white, matching subject name */}
             <div style={{ fontSize: 36, fontWeight: 800, color: "#fff" }}>{avgScore}%</div>
             <div style={{ fontSize: 12, color: "#94a3b8" }}>average score</div>
           </div>
@@ -158,13 +156,7 @@ function SubjectDetail({ subject, onBack }) {
             borderBottom: i < subject.topics.length - 1 ? "1px solid #f1f5f9" : "none",
             background: i % 2 === 0 ? "#fff" : "#fafafa"
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{
-                width: 8, height: 8, borderRadius: "50%",
-                background: t.score === null ? "#cbd5e1" : subject.color
-              }} />
-              <span style={{ fontSize: 14, color: "#1e293b", fontWeight: 500 }}>{t.name}</span>
-            </div>
+            <span style={{ fontSize: 14, color: "#1e293b", fontWeight: 500 }}>{t.name}</span>
             <ScoreBar score={t.score} />
           </div>
         ))}
@@ -193,6 +185,7 @@ export default function ProgressPage() {
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 800, margin: "0 auto", padding: "24px 16px", background: "#fff", minHeight: "100vh" }}>
+
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontSize: 36, fontWeight: 800, color: "#1a3a6b", margin: 0 }}>My Progress</h1>
         <p style={{ color: "#64748b", fontSize: 14, marginTop: 6 }}>Malawian Secondary School Syllabus — Click a subject to view your quiz results</p>
