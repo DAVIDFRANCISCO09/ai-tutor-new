@@ -68,10 +68,10 @@ export const DashboardHeader = ({
               </button>
             ) : (
               <div className="w-9 h-9 bg-[#1a365d] rounded-xl flex items-center justify-center shadow-md">
-                <span className="text-white font-black text-sm">AT</span>
+                <span className="text-white font-black text-sm">SM</span>
               </div>
             )}
-            <h1 className="text-base font-black text-[#1a365d] tracking-tight uppercase">AI Tutor</h1>
+            <h1 className="text-base font-black text-[#1a365d] tracking-tight uppercase">Smart Mphunzitsi</h1>
           </div>
 
           {/* desktop navigation bar */}
@@ -140,7 +140,7 @@ export const DashboardHeader = ({
               transition={{ duration: 0.22, ease: 'easeInOut' }}
               className="md:hidden overflow-hidden border-t border-gray-100 bg-white"
             >
-              {/* User info strip */}
+              {/* User info */}
               <div className="px-5 py-3 bg-[#1a365d]/5 flex items-center gap-3">
                 <div className="w-8 h-8 bg-[#1a365d] rounded-lg flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-black text-xs">{(userName ?? 'S')[0]}</span>
@@ -181,7 +181,7 @@ export const DashboardHeader = ({
                   aria-label="Log out"
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-all text-left"
                 >
-                  <LogOut size={18} />
+                  <LogOut size={16} />
                   <span>Log out</span>
                 </button>
               </div>
