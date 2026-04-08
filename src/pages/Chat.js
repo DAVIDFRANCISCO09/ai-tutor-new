@@ -73,7 +73,6 @@ function Chat() {
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
-      console.log('Voice captured:', transcript);
       setListening(false);
       sendMessage(transcript);
     };
@@ -81,19 +80,12 @@ function Chat() {
     recognition.onerror = (event) => {
       console.log('Voice error:', event.error);
       setListening(false);
-
-      if (event.error === 'no-speech') {
-        alert('No speech detected. Please try again!');
-      } else if (event.error === 'not-allowed') {
-        alert('Microphone permission denied. Please allow microphone access!');
-      } else {
-        alert('Voice error: ' + event.error);
-      }
+      if (event.error === 'no-speech') alert('No speech detected. Please try again!');
+      else if (event.error === 'not-allowed') alert('Microphone permission denied. Please allow microphone access!');
+      else alert('Voice error: ' + event.error);
     };
 
-    recognition.onend = () => {
-      setListening(false);
-    };
+    recognition.onend = () => setListening(false);
   };
 
   const handleKeyPress = (e) => {
@@ -104,11 +96,11 @@ function Chat() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
 
       {/* Navbar */}
-      <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-600">Smart Mphunzitsi</h1>
+      <nav className="bg-blue-900 shadow-md px-8 py-4 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-white">Smart Mphunzitsi</h1>
         <button
           onClick={() => navigate('/')}
-          className="text-gray-600 hover:text-red-500 font-medium"
+          className="text-gray-100 hover:text-red-500 font-medium"
         >
           Logout
         </button>
@@ -139,7 +131,7 @@ function Chat() {
               <div
                 className={`px-4 py-3 rounded-2xl max-w-lg text-sm ${
                   msg.role === 'user'
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-blue-900 text-white'
                     : 'bg-gray-100 text-gray-800'
                 }`}
               >
@@ -169,13 +161,7 @@ function Chat() {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V21h2a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2h2v-1.06A8 8 0 0 1 4 12a1 1 0 0 1 1-1z" />
             </svg>
           </button>
@@ -187,14 +173,14 @@ function Chat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+            className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
           />
 
           {/* Send Button */}
           <button
             onClick={() => sendMessage()}
             disabled={loading}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+            className="bg-blue-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 disabled:opacity-50"
           >
             Send
           </button>

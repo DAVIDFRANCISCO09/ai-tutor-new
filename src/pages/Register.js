@@ -25,7 +25,7 @@ function Register() {
           />
         </div>
 
-        <h2 className="text-3xl font-bold text-center text-blue-600 mb-2">
+        <h2 className="text-3xl font-bold text-center text-blue-900 mb-2">
           Smart Mphunzitsi
         </h2>
 
@@ -40,7 +40,7 @@ function Register() {
             placeholder="Enter your full name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
           />
         </div>
 
@@ -51,7 +51,7 @@ function Register() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
           />
         </div>
 
@@ -62,7 +62,7 @@ function Register() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
           />
         </div>
 
@@ -73,13 +73,13 @@ function Register() {
             placeholder="Confirm your password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
           />
         </div>
 
         <button
           onClick={handleRegister}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700"
+          className="w-full bg-blue-900 text-white py-3 rounded-lg font-medium hover:bg-blue-800"
         >
           Create Account
         </button>
@@ -88,7 +88,7 @@ function Register() {
           Already have an account?{' '}
           <span
             onClick={() => navigate('/login')}
-            className="text-blue-600 cursor-pointer hover:underline"
+            className="text-blue-900 cursor-pointer hover:underline"
           >
             Login
           </span>

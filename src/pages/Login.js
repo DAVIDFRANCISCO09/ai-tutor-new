@@ -25,7 +25,7 @@ function Login() {
           />
         </div>
 
-        <h2 className="text-3xl font-bold text-center text-blue-600 mb-2">
+        <h2 className="text-3xl font-bold text-center text-blue-900 mb-2">
           Smart Mphunzitsi
         </h2>
 
@@ -40,7 +40,7 @@ function Login() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
           />
         </div>
 
@@ -52,12 +52,12 @@ function Login() {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+              className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-gray-500 hover:text-blue-600"
+              className="absolute right-3 top-3 text-gray-500 hover:text-blue-900"
             >
               {showPassword ? '🙈' : '👁️'}
             </button>
@@ -67,7 +67,7 @@ function Login() {
         <div className="flex justify-end mb-6">
           <span
             onClick={() => navigate('/forgot-password')}
-            className="text-blue-600 text-sm cursor-pointer hover:underline"
+            className="text-blue-900 text-sm cursor-pointer hover:underline"
           >
             Forgot Password?
           </span>
@@ -75,7 +75,7 @@ function Login() {
 
         <button
           onClick={handleLogin}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700"
+          className="w-full bg-blue-900 text-white py-3 rounded-lg font-medium hover:bg-blue-800"
         >
           Login
         </button>
@@ -84,7 +84,7 @@ function Login() {
           Don't have an account?{' '}
           <span
             onClick={() => navigate('/register')}
-            className="text-blue-600 cursor-pointer hover:underline"
+            className="text-blue-900 cursor-pointer hover:underline"
           >
             Register
           </span>
