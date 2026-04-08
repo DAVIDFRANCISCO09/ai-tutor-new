@@ -116,7 +116,7 @@ export const DashboardHeader = ({
               <span className="uppercase tracking-wider">Logout</span>
             </button>
 
-            {/* Hamburger — mobile only */}
+            {/* Hamburger, mobile only */}
             <button
               onClick={() => setMenuOpen(o => !o)}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -154,7 +154,7 @@ export const DashboardHeader = ({
                 </div>
               </div>
 
-              {/* Nav items */}
+              {/* Navigation contents */}
               <nav className="px-3 py-2">
                 {navItems.map(item => (
                   <button
@@ -182,7 +182,7 @@ export const DashboardHeader = ({
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-all text-left"
                 >
                   <LogOut size={16} />
-                  <span>Log out</span>
+                  <span>Logout</span>
                 </button>
               </div>
             </motion.div>
