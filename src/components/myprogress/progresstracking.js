@@ -165,8 +165,68 @@ function SubjectDetail({ subject, onBack }) {
   );
 }
 
+function TopicsOverview({ onBack }) {
+  return (
+    <div>
+      <button
+        onClick={onBack}
+        style={{
+          background: "#1a3a6b", color: "#fff", border: "none",
+          borderRadius: 8, padding: "8px 16px", fontSize: 13,
+          fontWeight: 600, cursor: "pointer", marginBottom: 24,
+          display: "flex", alignItems: "center", gap: 6
+        }}
+      >
+        ← Back to Subjects
+      </button>
+
+      <div style={{
+        background: "#1a3a6b", borderRadius: 14, padding: "24px", marginBottom: 24
+      }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: "#fff", margin: 0, marginBottom: 6 }}>
+          Topics Attempted
+        </h2>
+        <p style={{ color: "#94a3b8", fontSize: 13, margin: 0 }}>
+          All topics you have covered across every subject
+        </p>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {SUBJECTS.map(s => {
+          const attempted = s.topics.filter(t => t.score !== null);
+          if (attempted.length === 0) return null;
+          return (
+            <div key={s.name} style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, overflow: "hidden" }}>
+              <div style={{
+                padding: "12px 20px",
+                background: "#1a3a6b",
+                display: "flex", justifyContent: "space-between", alignItems: "center"
+              }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>{s.name}</span>
+                <span style={{ fontSize: 12, color: "#94a3b8" }}>{attempted.length} topic{attempted.length > 1 ? "s" : ""} covered</span>
+              </div>
+              {attempted.map((t, i) => (
+                <div key={t.name} style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                  padding: "14px 20px",
+                  borderBottom: i < attempted.length - 1 ? "1px solid #f1f5f9" : "none",
+                  background: i % 2 === 0 ? "#fff" : "#fafafa"
+                }}>
+                  <span style={{ fontSize: 14, color: "#1e293b", fontWeight: 500 }}>{t.name}</span>
+                  <ScoreBar score={t.score} />
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function ProgressPage() {
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const [showTopicsOverview, setShowTopicsOverview] = useState(false);
 
   const totalDone = SUBJECTS.flatMap(s => s.topics).filter(t => t.score !== null).length;
   const totalTopics = SUBJECTS.flatMap(s => s.topics).length;
@@ -174,6 +234,14 @@ export default function ProgressPage() {
   const avgScore = allScores.length > 0
     ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)
     : 0;
+
+  if (showTopicsOverview) {
+    return (
+      <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 800, margin: "0 auto", padding: "24px 16px", background: "#fff", minHeight: "100vh" }}>
+        <TopicsOverview onBack={() => setShowTopicsOverview(false)} />
+      </div>
+    );
+  }
 
   if (selectedSubject) {
     return (
@@ -193,14 +261,28 @@ export default function ProgressPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginBottom: 32 }}>
         {[
-          { label: "Subjects", value: SUBJECTS.length },
-          { label: "Topics Attempted", value: `${totalDone} / ${totalTopics}` },
-          { label: "Avg Quiz Score", value: `${avgScore}%` },
-          { label: "Study Streak", value: "7 days" },
+          { label: "Subjects", value: SUBJECTS.length, clickable: false },
+          { label: "Topics Attempted", value: `${totalDone} / ${totalTopics}`, clickable: true },
+          { label: "Avg Quiz Score", value: `${avgScore}%`, clickable: false },
+          { label: "Study Streak", value: "7 days", clickable: false },
         ].map(s => (
-          <div key={s.label} style={{ background: "#1a3a6b", borderRadius: 12, padding: "16px" }}>
+          <div
+            key={s.label}
+            onClick={s.clickable ? () => setShowTopicsOverview(true) : undefined}
+            style={{
+              background: "#1a3a6b", borderRadius: 12, padding: "16px",
+              cursor: s.clickable ? "pointer" : "default",
+              transition: "opacity 0.2s",
+              position: "relative"
+            }}
+            onMouseEnter={e => { if (s.clickable) e.currentTarget.style.opacity = "0.85"; }}
+            onMouseLeave={e => { if (s.clickable) e.currentTarget.style.opacity = "1"; }}
+          >
             <p style={{ fontSize: 11, color: "#94a3b8", marginBottom: 4, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>{s.label}</p>
             <p style={{ fontSize: 24, fontWeight: 800, color: "#fff", margin: 0 }}>{s.value}</p>
+            {s.clickable && (
+              <span style={{ position: "absolute", top: 12, right: 12, color: "#94a3b8", fontSize: 14 }}>›</span>
+            )}
           </div>
         ))}
       </div>
