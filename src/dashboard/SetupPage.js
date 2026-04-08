@@ -51,10 +51,10 @@ export const SetupPage = ({ onComplete, userName = 'there' }) => {
           className="flex items-center gap-2.5 mb-8"
         >
           <div className="w-9 h-9 bg-[#1a365d] rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
-            <span className="text-white font-black text-sm tracking-tight">AT</span>
+            <span className="text-white font-black text-sm tracking-tight">SM</span>
           </div>
           <div>
-            <p className="text-[#1a365d] font-black text-sm uppercase tracking-widest leading-none">AI Tutor</p>
+            <p className="text-[#1a365d] font-black text-sm uppercase tracking-widest leading-none">Smart Mphunzitsi</p>
             <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-widest leading-none mt-0.5">Malawi</p>
           </div>
         </motion.div>
