@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Chat() {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hi! I am your AI Tutor. What would you like to learn today?' }
+    { role: 'assistant', content: 'Hi! I am your Mphunzitsi AI. What would you like to learn today?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -61,23 +61,33 @@ function Chat() {
       alert('Your browser does not support voice input. Please use Chrome!');
       return;
     }
+
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
+    recognition.continuous = false;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    recognition.start();
     setListening(true);
+    recognition.start();
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
+      console.log('Voice captured:', transcript);
       setListening(false);
       sendMessage(transcript);
     };
 
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
+      console.log('Voice error:', event.error);
       setListening(false);
-      alert('Could not capture voice. Please try again!');
+      if (event.error === 'no-speech') {
+        alert('No speech detected. Please try again!');
+      } else if (event.error === 'not-allowed') {
+        alert('Microphone permission denied. Please allow microphone access!');
+      } else {
+        alert('Voice error: ' + event.error);
+      }
     };
 
     recognition.onend = () => {
@@ -92,14 +102,26 @@ function Chat() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
 
+      {/* Navbar */}
       <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-600">AI Tutor</h1>
+        <h1 className="text-2xl font-bold text-blue-600">Mphunzitsi AI</h1>
         <button onClick={() => navigate('/')} className="text-gray-600 hover:text-red-500 font-medium">Logout</button>
       </nav>
 
+      {/* Main Content */}
       <div className="flex-1 max-w-3xl w-full mx-auto p-4 flex flex-col">
 
-        <div className="flex-1 bg-white rounded-2xl shadow-md p-6 mb-4 overflow-y-auto" style={{ maxHeight: '65vh' }}>
+        {/* Banner Image */}
+        <div className="mb-4 rounded-2xl overflow-hidden shadow-md">
+          <img
+            src="/images/students.jpg" // put your image here in public/images/students.jpg
+            alt="Malawian Secondary Students"
+            className="w-full h-48 object-cover"
+          />
+        </div>
+
+        {/* Chat Messages */}
+        <div className="flex-1 bg-white rounded-2xl shadow-md p-6 mb-4 overflow-y-auto" style={{ maxHeight: '55vh' }}>
           {messages.map((msg, index) => (
             <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`px-4 py-3 rounded-2xl max-w-lg text-sm ${msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}>
@@ -116,6 +138,7 @@ function Chat() {
           )}
         </div>
 
+        {/* Input Area */}
         <div className="bg-white rounded-2xl shadow-md p-4 flex gap-3 items-center">
           <button
             onClick={startListening}
@@ -127,7 +150,7 @@ function Chat() {
           </button>
           <input
             type="text"
-            placeholder="Ask your AI Tutor anything..."
+            placeholder="Ask your Mphunzitsi AI anything..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}

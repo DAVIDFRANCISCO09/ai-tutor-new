@@ -16,7 +16,16 @@ function Register() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
 
-        <h2 className="text-3xl font-bold text-center text-blue-600 mb-2">AI Tutor New</h2>
+        {/* Banner Image */}
+        <div className="mb-6 rounded-2xl overflow-hidden shadow-md">
+          <img
+            src="/images/students.jpg" // Make sure this image is in public/images/students.jpg
+            alt="Malawian Secondary Students"
+            className="w-full h-32 object-cover"
+          />
+        </div>
+
+        <h2 className="text-3xl font-bold text-center text-blue-600 mb-2">Mphunzitsi AI</h2>
         <p className="text-center text-gray-500 mb-8">Create your account</p>
 
         <div className="mb-4">
