@@ -19,14 +19,19 @@ function Login() {
         {/* Banner Image */}
         <div className="mb-6 rounded-2xl overflow-hidden shadow-md">
           <img
-            src="/images/students.jpg" // Make sure this image is in public/images/students.jpg
+            src="/images/students.jpg"
             alt="Malawian Secondary Students"
             className="w-full h-32 object-cover"
           />
         </div>
 
-        <h2 className="text-3xl font-bold text-center text-blue-600 mb-2">Mphunzitsi AI</h2>
-        <p className="text-center text-gray-500 mb-8">Login to your account</p>
+        <h2 className="text-3xl font-bold text-center text-blue-600 mb-2">
+          Smart Mphunzitsi
+        </h2>
+
+        <p className="text-center text-gray-500 mb-8">
+          Login to your account
+        </p>
 
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">Email</label>
@@ -77,7 +82,12 @@ function Login() {
 
         <p className="text-center text-gray-500 mt-6">
           Don't have an account?{' '}
-          <span onClick={() => navigate('/register')} className="text-blue-600 cursor-pointer hover:underline">Register</span>
+          <span
+            onClick={() => navigate('/register')}
+            className="text-blue-600 cursor-pointer hover:underline"
+          >
+            Register
+          </span>
         </p>
 
       </div>

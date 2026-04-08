@@ -9,7 +9,7 @@ function LandingPage() {
 
       {/* NAVBAR */}
       <nav className="bg-blue-600 shadow-md px-8 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-white">Mphunzitsi AI</h1>
+        <h1 className="text-2xl font-bold text-white">Smart Mphunzitsi</h1>
         <div className="flex gap-4">
           <button
             onClick={() => navigate('/login')}
@@ -35,8 +35,7 @@ function LandingPage() {
         {/* LEFT TEXT */}
         <div className="flex-1">
           <h2 className="text-5xl font-bold text-blue-700 mb-6 leading-tight">
-            Your Smart <span className="text-blue-500">Mphunzitsi</span> <br />
-            for Malawi Secondary Education
+            Built for <span className="text-blue-500">Malawi Secondary Education</span>
           </h2>
 
           <p className="text-xl text-blue-900 max-w-xl mb-8">
@@ -66,7 +65,7 @@ function LandingPage() {
         {/* RIGHT IMAGE */}
         <div className="flex-1 flex justify-center">
           <img
-            src="/images/students.jpg"   // <-- your local image
+            src="/images/students.jpg"
             alt="Malawian secondary school students learning"
             className="rounded-2xl shadow-lg max-w-md w-full"
           />
@@ -108,7 +107,7 @@ function LandingPage() {
 
       {/* FOOTER */}
       <footer className="bg-blue-600 text-white text-center py-6">
-        <p>© 2026 Mphunzitsi AI. All rights reserved.</p>
+        <p>© 2026 Smart Mphunzitsi. All rights reserved.</p>
       </footer>
 
     </div>
