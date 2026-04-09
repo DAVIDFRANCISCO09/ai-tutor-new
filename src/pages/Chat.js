@@ -176,7 +176,7 @@ function Chat() {
             className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
           />
 
-          {/* Send Button */}
+          {/* Send Button.....*/}
           <button
             onClick={() => sendMessage()}
             disabled={loading}
