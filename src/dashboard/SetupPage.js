@@ -31,13 +31,13 @@ export const SetupPage = ({ onComplete, userName = 'there' }) => {
   const canProceed = selectedForm && selectedGoal;
 
   const handleStart = () => {
-    if (!canProceed) return;
-    localStorage.setItem('userForm',  selectedForm);
-    localStorage.setItem('userLevel', 'Secondary');
-    localStorage.setItem('userGoal',  selectedGoal);
-    if (typeof onComplete === 'function') onComplete('Secondary', selectedForm);
-    navigate('/');
-  };
+  if (!canProceed) return;
+  localStorage.setItem('userForm', selectedForm);
+  localStorage.setItem('userLevel', 'Secondary');
+  localStorage.setItem('userGoal', selectedGoal);
+  if (typeof onComplete === 'function') onComplete('Secondary', selectedForm);
+  navigate('/dashboard');  // ← Changed to dashboard
+};
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center px-4 py-10">
