@@ -98,12 +98,7 @@ function Chat() {
       {/* Navbar */}
       <nav className="bg-blue-900 shadow-md px-8 py-4 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-white">Smart Mphunzitsi</h1>
-        <button
-          onClick={() => navigate('/')}
-          className="text-gray-100 hover:text-red-500 font-medium"
-        >
-          Logout
-        </button>
+       <button onClick={() => navigate('/login')} className="text-gray-600 hover:text-red-500 font-medium">Logout</button>
       </nav>
 
       {/* Main Content */}

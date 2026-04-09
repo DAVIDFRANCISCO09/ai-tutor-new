@@ -105,10 +105,10 @@ export const LessonPage = () => {
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
           className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"
         >
-          <button className="flex items-center justify-center gap-3 bg-[#1a365d] text-white py-4 rounded-2xl font-bold text-sm shadow-lg hover:bg-[#15304f] transition-all active:scale-95">
-            <MessageSquare size={18} />
-            Discuss with AI Tutor
-          </button>
+          <button onClick={() => window.location.href = '/chat'} className="flex items-center justify-center gap-3 bg-[#1a365d] text-white py-4 rounded-2xl font-bold text-sm shadow-lg hover:bg-[#15304f] transition-all active:scale-95">
+  <MessageSquare size={18} />
+  Discuss with Smart Mphunzitsi
+</button>
           <button className="flex items-center justify-center gap-3 bg-white text-[#1a365d] py-4 rounded-2xl font-bold text-sm border-2 border-[#1a365d]/10 hover:border-[#1a365d]/30 transition-all active:scale-95">
             <Play size={18} />
             Take Lesson Quiz
