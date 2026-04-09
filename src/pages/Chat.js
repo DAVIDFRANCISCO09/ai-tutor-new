@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Chat() {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hi! I am your AI Tutor. What would you like to learn today?' }
+    { role: 'assistant', content: 'Hi! I am your Smart Mphunzitsi. What would you like to learn today?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -61,13 +61,15 @@ function Chat() {
       alert('Your browser does not support voice input. Please use Chrome!');
       return;
     }
+
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
+    recognition.continuous = false;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    recognition.start();
     setListening(true);
+    recognition.start();
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
@@ -75,14 +77,15 @@ function Chat() {
       sendMessage(transcript);
     };
 
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
+      console.log('Voice error:', event.error);
       setListening(false);
-      alert('Could not capture voice. Please try again!');
+      if (event.error === 'no-speech') alert('No speech detected. Please try again!');
+      else if (event.error === 'not-allowed') alert('Microphone permission denied. Please allow microphone access!');
+      else alert('Voice error: ' + event.error);
     };
 
-    recognition.onend = () => {
-      setListening(false);
-    };
+    recognition.onend = () => setListening(false);
   };
 
   const handleKeyPress = (e) => {
@@ -92,21 +95,51 @@ function Chat() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
 
-      <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-600">Smart Mphunzitsi</h1>
-       <button onClick={() => navigate('/login')} className="text-gray-600 hover:text-red-500 font-medium">Logout</button>
-      </nav>
+{/* Navbar */}
+<nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
+  <h1 className="text-2xl font-bold text-blue-600">Smart Mphunzitsi</h1>
+  <button
+    onClick={() => navigate('/login')}
+    className="text-gray-600 hover:text-red-500 font-medium"
+  >
+    Logout
+  </button>
+</nav>
 
+      {/* Main Content */}
       <div className="flex-1 max-w-3xl w-full mx-auto p-4 flex flex-col">
 
-        <div className="flex-1 bg-white rounded-2xl shadow-md p-6 mb-4 overflow-y-auto" style={{ maxHeight: '65vh' }}>
+        {/* Banner Image */}
+        <div className="mb-4 rounded-2xl overflow-hidden shadow-md">
+          <img
+            src="/images/students.jpg"
+            alt="Malawian Secondary Students"
+            className="w-full h-48 object-cover"
+          />
+        </div>
+
+        {/* Chat Messages */}
+        <div
+          className="flex-1 bg-white rounded-2xl shadow-md p-6 mb-4 overflow-y-auto"
+          style={{ maxHeight: '55vh' }}
+        >
           {messages.map((msg, index) => (
-            <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`px-4 py-3 rounded-2xl max-w-lg text-sm ${msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}>
+            <div
+              key={index}
+              className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div
+                className={`px-4 py-3 rounded-2xl max-w-lg text-sm ${
+                  msg.role === 'user'
+                    ? 'bg-blue-900 text-white'
+                    : 'bg-gray-100 text-gray-800'
+                }`}
+              >
                 {msg.content}
               </div>
             </div>
           ))}
+
           {loading && (
             <div className="flex justify-start mb-4">
               <div className="px-4 py-3 rounded-2xl bg-gray-100 text-gray-800 text-sm">
@@ -116,27 +149,38 @@ function Chat() {
           )}
         </div>
 
+        {/* Input Area */}
         <div className="bg-white rounded-2xl shadow-md p-4 flex gap-3 items-center">
+
+          {/* Voice Button */}
           <button
             onClick={startListening}
-            className={`p-3 rounded-full transition-all ${listening ? 'bg-red-500 text-white animate-pulse' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+            className={`p-3 rounded-full transition-all ${
+              listening
+                ? 'bg-red-500 text-white animate-pulse'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V21h2a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2h2v-1.06A8 8 0 0 1 4 12a1 1 0 0 1 1-1z"/>
+              <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V21h2a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2h2v-1.06A8 8 0 0 1 4 12a1 1 0 0 1 1-1z" />
             </svg>
           </button>
+
+          {/* Input */}
           <input
             type="text"
-            placeholder="Ask your AI Tutor anything..."
+            placeholder="Ask your Smart Mphunzitsi anything..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+            className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
           />
+
+          {/* Send Button.....*/}
           <button
             onClick={() => sendMessage()}
             disabled={loading}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+            className="bg-blue-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 disabled:opacity-50"
           >
             Send
           </button>
