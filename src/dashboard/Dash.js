@@ -27,7 +27,7 @@ export const Dash = () => {
     localStorage.removeItem('userForm');
     localStorage.removeItem('userLevel');
     localStorage.removeItem('userName');
-    navigate('/login');
+    navigate('/');
   };
 
   return (

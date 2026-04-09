@@ -9,7 +9,7 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    navigate('/chat');
+   navigate('/dashboard');
   };
 
   return (

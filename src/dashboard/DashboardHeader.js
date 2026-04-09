@@ -40,15 +40,17 @@ export const DashboardHeader = ({
       isActive: activeTab === 'progress',
       action: () => { setActiveTab('progress'); setMenuOpen(false); },
     },
-    {
-      id: 'ai-tutor',
-      icon: <Sparkles size={18} />,
-      label: 'AI Tutor',
-      isActive: false,
-      disabled: true,
-      tooltip: 'Coming soon',
-      action: () => {},
-    },
+   {
+  id: 'ai-tutor',
+  icon: <Sparkles size={18} />,
+  label: 'AI Tutor',
+  isActive: false,
+  disabled: false,  // ← changed to false
+  action: () => {
+    window.location.href = '/chat';
+    setMenuOpen(false);
+  },
+  },
   ];
 
   return (
