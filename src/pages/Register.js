@@ -13,7 +13,7 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="min-h-screen bg-[#eef3fb] flex items-center justify-center">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
 
         {/* Banner Image */}
@@ -25,7 +25,7 @@ function Register() {
           />
         </div>
 
-        <h2 className="text-3xl font-bold text-center text-blue-900 mb-2">
+        <h2 className="text-3xl font-bold text-center text-[#0a1f44] mb-2">
           Smart Mphunzitsi
         </h2>
 
@@ -34,52 +34,52 @@ function Register() {
         </p>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Full Name</label>
+          <label className="block text-[#0a1f44] font-medium mb-2">Full Name</label>
           <input
             type="text"
             placeholder="Enter your full name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-[#0a1f44]"
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Email</label>
+          <label className="block text-[#0a1f44] font-medium mb-2">Email</label>
           <input
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-[#0a1f44]"
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Password</label>
+          <label className="block text-[#0a1f44] font-medium mb-2">Password</label>
           <input
             type="password"
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-[#0a1f44]"
           />
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2">Confirm Password</label>
+          <label className="block text-[#0a1f44] font-medium mb-2">Confirm Password</label>
           <input
             type="password"
             placeholder="Confirm your password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-900"
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-[#0a1f44]"
           />
         </div>
 
         <button
           onClick={handleRegister}
-          className="w-full bg-blue-900 text-white py-3 rounded-lg font-medium hover:bg-blue-800"
+          className="w-full bg-[#0a1f44] text-white py-3 rounded-lg font-medium hover:bg-[#1a2f5a]"
         >
           Create Account
         </button>
@@ -88,7 +88,7 @@ function Register() {
           Already have an account?{' '}
           <span
             onClick={() => navigate('/login')}
-            className="text-blue-900 cursor-pointer hover:underline"
+            className="text-[#0a1f44] cursor-pointer hover:underline"
           >
             Login
           </span>
