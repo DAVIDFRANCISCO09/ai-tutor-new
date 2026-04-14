@@ -1,21 +1,27 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Chat() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { subject, topic } = location.state || { subject: 'General', topic: 'General Knowledge' };
+
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hi! I am Smart Mphunzitsi, your personal tutor. What would you like to learn today?' }
+    { role: 'assistant', content: `Hi! I am Smart Mphunzitsi. Today we are studying ${topic} in ${subject}. Feel free to ask me anything about this topic!` }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [listening, setListening] = useState(false);
   const sessionKey = React.useRef('session_' + Date.now());
-  const navigate = useNavigate();
 
   const saveToHistory = (msgs) => {
     const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
     const existingIndex = history.findIndex(s => s.id === sessionKey.current);
     const session = {
       id: sessionKey.current,
+      subject: subject,
+      topic: topic,
       date: new Date().toLocaleString(),
       messages: msgs
     };
@@ -46,7 +52,27 @@ function Chat() {
         },
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',
-          messages: updatedMessages,
+          messages: [
+            {
+              role: 'system',
+              content: `You are Smart Mphunzitsi, an intelligent and friendly AI tutor for students in Malawi.
+
+              The student has selected the subject: ${subject}
+              The specific topic is: ${topic}
+
+              Your strict rules are:
+              - ONLY answer questions related to ${topic} in ${subject}
+              - If the student asks about ANY other subject or topic, politely refuse and redirect them back to ${topic} in ${subject}
+              - For example if subject is Chemistry and topic is Organic Chemistry, do NOT answer questions about Physics, Math, Biology or any other subject
+              - Explain concepts clearly using simple language and examples relevant to Malawian students
+              - Break down difficult concepts into small easy steps
+              - Ask follow-up questions to check understanding
+              - Be patient, encouraging and supportive
+              - Celebrate the student's progress
+              - Always respond in English only, do not use any Chichewa phrases`
+            },
+            ...updatedMessages
+          ],
           max_tokens: 1024
         })
       });
@@ -120,12 +146,31 @@ function Chat() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
 
       <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-600">Smart Mphunzitsi</h1>
+        <div>
+          <h1 className="text-2xl font-bold" style={{ color: '#001f5b' }}>Smart Mphunzitsi</h1>
+          <p className="text-sm text-gray-500">{subject} — {topic}</p>
+        </div>
         <div className="flex gap-4">
-          <button onClick={() => navigate('/history')} className="text-gray-600 hover:text-blue-600 font-medium">
+          <button
+            onClick={() => navigate('/history')}
+            className="font-medium hover:opacity-75"
+            style={{ color: '#001f5b' }}
+          >
             History
           </button>
-          <button onClick={() => navigate('/')} className="text-gray-600 hover:text-red-500 font-medium">Logout</button>
+          <button
+            onClick={() => navigate(-1)}
+            className="font-medium hover:opacity-75"
+            style={{ color: '#001f5b' }}
+          >
+            ← Back
+          </button>
+          <button
+            onClick={() => navigate('/')}
+            className="text-gray-600 hover:text-red-500 font-medium"
+          >
+            Logout
+          </button>
         </div>
       </nav>
 
@@ -134,7 +179,10 @@ function Chat() {
         <div className="flex-1 bg-white rounded-2xl shadow-md p-6 mb-4 overflow-y-auto" style={{ maxHeight: '65vh' }}>
           {messages.map((msg, index) => (
             <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`px-4 py-3 rounded-2xl max-w-lg text-sm ${msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}>
+              <div
+                className={`px-4 py-3 rounded-2xl max-w-lg text-sm ${msg.role === 'user' ? 'text-white' : 'bg-gray-100 text-gray-800'}`}
+                style={msg.role === 'user' ? { backgroundColor: '#001f5b' } : {}}
+              >
                 {msg.content}
               </div>
             </div>
@@ -159,16 +207,17 @@ function Chat() {
           </button>
           <input
             type="text"
-            placeholder="Ask Smart Mphunzitsi anything..."
+            placeholder={`Ask anything about ${topic}...`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500"
+            className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none"
           />
           <button
             onClick={() => sendMessage()}
             disabled={loading}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
+            className="text-white px-6 py-3 rounded-lg font-medium disabled:opacity-50"
+            style={{ backgroundColor: '#001f5b' }}
           >
             Send
           </button>
