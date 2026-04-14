@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
@@ -25,6 +26,7 @@ function App() {
     </Routes>
     </BrowserRouter>
   );
-}
+
+
 
 export default App;
