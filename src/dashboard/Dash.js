@@ -71,7 +71,7 @@ export const Dash = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                {/* Progress tab will come soon */}
+                {/* will come soon */}
               </motion.div>
             )}
           </AnimatePresence>
