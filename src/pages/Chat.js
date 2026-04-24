@@ -95,16 +95,11 @@ function Chat() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
 
-{/* Navbar */}
-<nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
-  <h1 className="text-2xl font-bold text-blue-600">Smart Mphunzitsi</h1>
-  <button
-    onClick={() => navigate('/login')}
-    className="text-gray-600 hover:text-red-500 font-medium"
-  >
-    Logout
-  </button>
-</nav>
+      {/* Navbar */}
+      <nav className="bg-blue-900 shadow-md px-8 py-4 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-white">Smart Mphunzitsi</h1>
+       <button onClick={() => navigate('/login')} className="text-gray-600 hover:text-red-500 font-medium">Logout</button>
+      </nav>
 
       {/* Main Content */}
       <div className="flex-1 max-w-3xl w-full mx-auto p-4 flex flex-col">

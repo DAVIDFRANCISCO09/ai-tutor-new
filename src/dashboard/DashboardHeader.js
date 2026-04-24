@@ -41,16 +41,17 @@ export const DashboardHeader = ({
       action: () => { setActiveTab('progress'); setMenuOpen(false); },
     },
    {
+    
   id: 'ai-tutor',
   icon: <Sparkles size={18} />,
-  label: 'AI Tutor',
+  label: 'Smart Mphunzitsi',
   isActive: false,
   disabled: false,  // ← changed to false
   action: () => {
     window.location.href = '/chat';
     setMenuOpen(false);
   },
-  },
+},
   ];
 
   return (
