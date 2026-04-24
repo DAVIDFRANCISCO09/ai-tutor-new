@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Chat from './pages/Chat';
+import ProgressPage from './components/myprogress/progresstracking';
 
 import { Dash } from './dashboard/Dash';
 import { SetupPage } from './dashboard/SetupPage';
