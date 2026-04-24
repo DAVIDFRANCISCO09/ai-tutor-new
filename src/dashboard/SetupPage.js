@@ -1,4 +1,4 @@
-:
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Check, GraduationCap, BookOpen, Eye, Headphones, PenTool, Users, ChevronLeft } from 'lucide-react';
