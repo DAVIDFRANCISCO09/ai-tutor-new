@@ -6,7 +6,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Chat from './pages/Chat';
+<<<<<<< HEAD
 import History from './pages/History';
+=======
+import ProgressPage from './components/myprogress/progresstracking';
+>>>>>>> de19feac748a3814bf232b9cbcbdc429ee9ed556
 
 import { Dash } from './dashboard/Dash';
 import { SetupPage } from './dashboard/SetupPage';
