@@ -7,20 +7,12 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
-    "chart.js": "^4.5.1",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^5.3.1",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^7.14.0",
-=======
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.7.0",
     "react": "18.2.0",
 "react-dom": "18.2.0",
     "react-router-dom": "^7.13.2",
     "react-scripts": "^5.0.1",
->>>>>>> ab12a6265ff05cbe29a87652ec9209c96797591e
     "web-vitals": "^2.1.4"
   },
   "scripts": {
