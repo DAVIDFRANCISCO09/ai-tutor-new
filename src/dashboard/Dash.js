@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,9 +15,11 @@ export const Dash = () => {
   const [selectionStep, setSelectionStep]     = useState('subject');
   const [selectedSubject, setSelectedSubject] = useState(null);
 
+  // If setup not done, redirect to setup
   if (!userForm) return <Navigate to="/setup" replace />;
 
   const handleStartLearning = (topic) => {
+    // Navigate to lesson page using URL params
     navigate(`/lesson/${encodeURIComponent(selectedSubject)}/${encodeURIComponent(topic)}`);
   };
 
@@ -27,6 +27,7 @@ export const Dash = () => {
     localStorage.removeItem('userForm');
     localStorage.removeItem('userLevel');
     localStorage.removeItem('userName');
+    localStorage.removeItem('learningStyle');
     navigate('/');
   };
 
@@ -71,7 +72,7 @@ export const Dash = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                {/* will come soon */}
+                {/* Progress tab — navigates to dedicated page */}
               </motion.div>
             )}
           </AnimatePresence>
