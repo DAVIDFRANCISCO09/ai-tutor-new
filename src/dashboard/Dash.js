@@ -1,10 +1,9 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DashboardHeader } from '../dashboard/DashboardHeader';
 import { getMySubjects, getLessonsBySubjectAndForm } from '../services/lessonService';
+import { cacheTopicsList } from '../services/cache';
 
 export const Dash = () => {
   const userName = localStorage.getItem('userName') || 'Student';
@@ -18,19 +17,41 @@ export const Dash = () => {
   const [subjectsData, setSubjectsData] = useState([]);
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Parse query parameter: ?subject=Mathematics
+  // ========== HANDLER FUNCTIONS (defined at the top) ==========
+  const handleSubjectClick = (subject) => {
+    navigate(`/dashboard?subject=${encodeURIComponent(subject)}`);
+    setSelectedSubject(subject);
+    setSelectionStep('topic');
+  };
+
+  const handleBackToSubjects = () => {
+    navigate('/dashboard', { replace: true });
+    setSelectionStep('subject');
+    setSelectedSubject(null);
+  };
+
+  const handleStartLearning = (topic) => {
+    navigate(`/lesson/${encodeURIComponent(selectedSubject)}/${encodeURIComponent(topic)}`);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
+  
+
+  // Parse query parameter
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const subjectParam = params.get('subject');
     if (subjectParam && subjectsData.length > 0) {
-      // Check if subject exists in the data
       const subjectExists = subjectsData.some(s => s.subject === subjectParam);
       if (subjectExists) {
         setSelectedSubject(subjectParam);
         setSelectionStep('topic');
       } else {
-        // Invalid subject, clear query param without reload
         navigate('/dashboard', { replace: true });
       }
     }
@@ -39,10 +60,16 @@ export const Dash = () => {
   useEffect(() => {
     const loadSubjects = async () => {
       try {
+        setError('');
         const data = await getMySubjects();
-        setSubjectsData(data);
+        if (data && Array.isArray(data)) {
+          setSubjectsData(data);
+        } else {
+          setError('No subjects found');
+        }
       } catch (err) {
         console.error('Failed to load subjects', err);
+        setError('Failed to load subjects. Please check your internet connection.');
       } finally {
         setLoading(false);
       }
@@ -57,8 +84,10 @@ export const Dash = () => {
           const lessons = await getLessonsBySubjectAndForm(selectedSubject, userForm);
           const uniqueTopics = [...new Map(lessons.map(l => [l.topic, l])).values()];
           setTopics(uniqueTopics);
+          await cacheTopicsList(selectedSubject, userForm, uniqueTopics);
         } catch (err) {
           console.error('Failed to load topics', err);
+          setTopics([]);
         }
       };
       loadTopics();
@@ -66,29 +95,6 @@ export const Dash = () => {
   }, [selectedSubject, selectionStep, userForm]);
 
   if (!userForm) return <Navigate to="/setup" replace />;
-
-  const handleSubjectClick = (subject) => {
-    // Add query parameter to URL (push new history entry)
-    navigate(`/dashboard?subject=${encodeURIComponent(subject)}`);
-    setSelectedSubject(subject);
-    setSelectionStep('topic');
-  };
-
-  const handleBackToSubjects = () => {
-    // Remove query parameter and go back to subject list
-    navigate('/dashboard', { replace: true });
-    setSelectionStep('subject');
-    setSelectedSubject(null);
-  };
-
-  const handleStartLearning = (topic) => {
-    navigate(`/lesson/${encodeURIComponent(selectedSubject)}/${encodeURIComponent(topic)}`);
-  };
-
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/');
-  };
 
   if (loading) {
     return (
@@ -116,6 +122,35 @@ export const Dash = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#f8f9fa]">
+        <DashboardHeader
+          userName={userName}
+          userForm={userForm}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          selectionStep={selectionStep}
+          setSelectionStep={setSelectionStep}
+          setSelectedSubject={setSelectedSubject}
+          onBack={handleBackToSubjects}
+          onLogout={handleLogout}
+        />
+        <main className="p-6">
+          <div className="max-w-5xl mx-auto bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+            <p className="text-red-600">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-4 bg-[#1a365d] text-white px-4 py-2 rounded-lg"
+            >
+              Retry
+            </button>
           </div>
         </main>
       </div>
@@ -166,7 +201,6 @@ export const Dash = () => {
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    {/* Back button removed because the header now handles navigation via query param */}
                     <div>
                       <h2 className="text-3xl font-bold text-[#1a365d]">{selectedSubject} Topics</h2>
                       <p className="text-gray-500 font-medium">Select a topic to start your session</p>

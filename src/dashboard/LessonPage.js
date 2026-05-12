@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle, Clock, FileText, Lightbulb, Target, ChevronLeft, ChevronRight, Video, BookOpen, MoreHorizontal, HelpCircle, Award, ExternalLink } from 'lucide-react';
 import api from '../services/api';
+import { cacheLesson } from '../services/cache';
 
 export const LessonPage = () => {
   const { subject, topic } = useParams();
@@ -49,6 +50,9 @@ export const LessonPage = () => {
         if (index === -1) index = 0;
         setCurrentIndex(index);
         setCurrentLesson(topicLessons[index]);
+        
+        // Cache this lesson for offline access
+        await cacheLesson(topicLessons[index]);
       } catch (err) {
         console.error(err);
         setError('Failed to load lesson');
@@ -62,7 +66,6 @@ export const LessonPage = () => {
   const goToPrevious = () => {
     if (currentIndex > 0) {
       const prevLesson = allLessons[currentIndex - 1];
-     
       navigate(`/lesson/${encodeURIComponent(subject)}/${encodeURIComponent(topic)}?lessonId=${prevLesson.lessonId}`, {
         replace: true,
         state: location.state
@@ -76,7 +79,6 @@ export const LessonPage = () => {
   const goToNext = () => {
     if (currentIndex < allLessons.length - 1) {
       const nextLesson = allLessons[currentIndex + 1];
-      
       navigate(`/lesson/${encodeURIComponent(subject)}/${encodeURIComponent(topic)}?lessonId=${nextLesson.lessonId}`, {
         replace: true,
         state: location.state
@@ -160,35 +162,53 @@ export const LessonPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 pb-20">
-      <div className="bg-white shadow-md sticky top-0 z-30">
-        <div className="px-5 py-4 flex items-center justify-between max-w-6xl mx-auto">
-          <div className="flex items-center gap-4">
-            {/* Back button - now correctly goes to topics list */}
-            <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 rounded-xl text-[#1a365d] transition-colors">
-              <ArrowLeft size={22} />
-            </button>
-            <div>
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{currentLesson.subject}</p>
-              <h1 className="text-base md:text-lg font-black text-[#1a365d]">{currentLesson.lessonTitle}</h1>
-              <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
-                <Clock size={11} />
-                <span>{currentLesson.estimatedTime || '15 mins'} read</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <button onClick={goToPrevious} disabled={currentIndex === 0} className={`p-2 rounded-lg transition-colors ${currentIndex === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-[#1a365d] hover:bg-gray-100'}`}>
-              <ChevronLeft size={20} />
-            </button>
-            <span className="text-xs text-gray-500 self-center">{currentIndex+1}/{allLessons.length}</span>
-            <button onClick={goToNext} disabled={currentIndex === allLessons.length-1} className={`p-2 rounded-lg transition-colors ${currentIndex === allLessons.length-1 ? 'text-gray-300 cursor-not-allowed' : 'text-[#1a365d] hover:bg-gray-100'}`}>
-              <ChevronRight size={20} />
-            </button>
-          </div>
-        </div>
-      </div>
+<div className="bg-white shadow-md sticky top-0 z-30">
+  <div className="px-5 py-4 flex items-center justify-between max-w-6xl mx-auto">
+    {/* Left: Back button – same position as on topics list */}
+    <button 
+      onClick={() => navigate(-1)} 
+      className="p-2 hover:bg-gray-100 rounded-xl text-[#1a365d] transition-colors"
+      aria-label="Go back"
+    >
+      <ArrowLeft size={22} />
+    </button>
 
-      {/* Rest of the content unchanged */}
+    {/* Center: Topic title */}
+    <h1 className="text-base md:text-lg font-black text-[#1a365d] text-center">
+      {currentLesson.lessonTitle}
+    </h1>
+
+    {/* Right: Previous/Next navigation */}
+    <div className="flex gap-2">
+      <button 
+        onClick={goToPrevious} 
+        disabled={currentIndex === 0} 
+        className={`p-2 rounded-lg transition-colors ${
+          currentIndex === 0 
+            ? 'text-gray-300 cursor-not-allowed' 
+            : 'text-[#1a365d] hover:bg-gray-100'
+        }`}
+      >
+        <ChevronLeft size={20} />
+      </button>
+      <span className="text-xs text-gray-500 self-center">
+        {currentIndex+1}/{allLessons.length}
+      </span>
+      <button 
+        onClick={goToNext} 
+        disabled={currentIndex === allLessons.length-1} 
+        className={`p-2 rounded-lg transition-colors ${
+          currentIndex === allLessons.length-1 
+            ? 'text-gray-300 cursor-not-allowed' 
+            : 'text-[#1a365d] hover:bg-gray-100'
+        }`}
+      >
+        <ChevronRight size={20} />
+      </button>
+    </div>
+  </div>
+</div>
+
       <div className="max-w-4xl mx-auto px-5 py-8 space-y-8">
         {/* Introduction */}
         <motion.section className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
@@ -217,7 +237,7 @@ export const LessonPage = () => {
           </ul>
         </motion.section>
 
-        {/* Learning Style Specific Blocks (unchanged) */}
+        {/* Learning Style Specific Blocks */}
         {learningStyle === 'visual' && currentLesson.videoUrl && (
           <motion.section className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
             <div className="flex items-center gap-2 text-[#1a365d] mb-4">
