@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
@@ -15,8 +15,27 @@ import { Toaster } from 'react-hot-toast';
 import QuizPage from './Quiz/QuizPage';
 
 function App() {
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   return (
     <BrowserRouter>
+      {isOffline && (
+        <div className="bg-amber-500 text-white text-center py-2 text-sm font-medium sticky top-0 z-50">
+          📡 You are offline. You can view your cached lessons, past chats, and previous quiz results.
+          New quizzes and AI chat require internet. Login/Register also need internet.
+        </div>
+      )}
       <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<LandingPage />} />
