@@ -19,7 +19,7 @@ export const Dash = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // ========== HANDLER FUNCTIONS (defined at the top) ==========
+  // ========== HANDLER FUNCTIONS ==========
   const handleSubjectClick = (subject) => {
     navigate(`/dashboard?subject=${encodeURIComponent(subject)}`);
     setSelectedSubject(subject);
@@ -40,7 +40,6 @@ export const Dash = () => {
     localStorage.clear();
     navigate('/');
   };
-  
 
   // Parse query parameter
   useEffect(() => {
@@ -69,7 +68,11 @@ export const Dash = () => {
         }
       } catch (err) {
         console.error('Failed to load subjects', err);
-        setError('Failed to load subjects. Please check your internet connection.');
+        if (!navigator.onLine) {
+          setError('You are offline and no subjects have been cached yet. Please connect to the internet and refresh to load subjects.');
+        } else {
+          setError('Failed to load subjects. Please check your internet connection.');
+        }
       } finally {
         setLoading(false);
       }
@@ -88,6 +91,9 @@ export const Dash = () => {
         } catch (err) {
           console.error('Failed to load topics', err);
           setTopics([]);
+          if (!navigator.onLine) {
+            setError('You are offline and no topics have been cached. Please go online to view topics.');
+          }
         }
       };
       loadTopics();
