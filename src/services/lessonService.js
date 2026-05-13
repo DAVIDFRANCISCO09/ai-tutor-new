@@ -1,24 +1,73 @@
 import api from './api';
+import {
+  getCachedSubjectsList,
+  cacheSubjectsList,
+  getCachedTopicsList,
+  cacheTopicsList,
+  getCachedLesson,
+  cacheLesson
+} from './cache';
 
 // Get all subjects with lessons for the logged-in user's form
 export const getMySubjects = async () => {
-  const response = await api.get('/lessons/my-subjects');
-  return response.data.data; // array: [{ subject, form, count, lessons: [...] }]
+  if (navigator.onLine) {
+    try {
+      const response = await api.get('/lessons/my-subjects');
+      const subjects = response.data.data;
+      await cacheSubjectsList(subjects);
+      return subjects;
+    } catch (error) {
+      const cached = await getCachedSubjectsList();
+      if (cached) return cached;
+      throw error;
+    }
+  } else {
+    const cached = await getCachedSubjectsList();
+    if (cached) return cached;
+    throw new Error('No cached subjects available. Please go online to load subjects once.');
+  }
 };
 
 // Get all lessons for a specific subject and form (used for topic list)
 export const getLessonsBySubjectAndForm = async (subject, form) => {
-  const response = await api.get(`/lessons/subject/${encodeURIComponent(subject)}?form=${encodeURIComponent(form)}`);
-  return response.data.data; // array of lesson objects
+  if (navigator.onLine) {
+    try {
+      const response = await api.get(`/lessons/subject/${encodeURIComponent(subject)}?form=${encodeURIComponent(form)}`);
+      const lessons = response.data.data;
+      await cacheTopicsList(subject, form, lessons);
+      return lessons;
+    } catch (error) {
+      const cached = await getCachedTopicsList(subject, form);
+      if (cached) return cached;
+      throw error;
+    }
+  } else {
+    const cached = await getCachedTopicsList(subject, form);
+    if (cached) return cached;
+    throw new Error('No cached lessons available for this subject.');
+  }
 };
 
-// Get a single lesson by subject and lessonId (if you have the lessonId)
+// Get a single lesson by subject and lessonId
 export const getLessonByLessonId = async (subject, lessonId) => {
-  const response = await api.get(`/lessons/${encodeURIComponent(subject)}/${encodeURIComponent(lessonId)}`);
-  return response.data; // the lesson object
+  if (navigator.onLine) {
+    try {
+      const response = await api.get(`/lessons/${encodeURIComponent(subject)}/${encodeURIComponent(lessonId)}`);
+      const lesson = response.data;
+      await cacheLesson(lesson);
+      return lesson;
+    } catch (error) {
+      const cached = await getCachedLesson(lessonId);
+      if (cached) return cached;
+      throw error;
+    }
+  } else {
+    const cached = await getCachedLesson(lessonId);
+    if (cached) return cached;
+    throw new Error('No cached lesson found. Please go online to load this lesson once.');
+  }
 };
 
-// Alternative: get lesson by topic (filter from all lessons of subject+form)
 export const getLessonByTopic = async (subject, form, topic) => {
   const lessons = await getLessonsBySubjectAndForm(subject, form);
   return lessons.find(lesson => lesson.topic === topic);
