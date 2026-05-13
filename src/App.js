@@ -30,13 +30,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      {isOffline && (
-        <div className="bg-amber-500 text-white text-center py-2 text-sm font-medium sticky top-0 z-50">
-          📡 You are offline. You can view your cached lessons, past chats, and previous quiz results.
-          New quizzes and AI chat require internet. Login/Register also need internet.
-        </div>
-      )}
-      <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
