@@ -19,7 +19,7 @@ export const Dash = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // ========== HANDLER FUNCTIONS ==========
+  // HANDLER FUNCTIONS 
   const handleSubjectClick = (subject) => {
     navigate(`/dashboard?subject=${encodeURIComponent(subject)}`);
     setSelectedSubject(subject);
