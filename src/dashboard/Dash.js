@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DashboardHeader } from '../dashboard/DashboardHeader';
-import { getMySubjects, getLessonsBySubjectAndForm } from '../services/lessonService';
+import { getMySubjects, getLessonsBySubjectAndForm, precacheAllLessons } from '../services/lessonService';
 import { cacheTopicsList } from '../services/cache';
 
 export const Dash = () => {
@@ -56,6 +56,7 @@ export const Dash = () => {
     }
   }, [location.search, subjectsData, navigate]);
 
+  // Load subjects (main data)
   useEffect(() => {
     const loadSubjects = async () => {
       try {
@@ -80,6 +81,22 @@ export const Dash = () => {
     loadSubjects();
   }, []);
 
+  // Pre‑cache all lessons in the background (only after subjects are loaded and online)
+  useEffect(() => {
+    if (!loading && subjectsData.length > 0 && navigator.onLine && userForm) {
+      // Use requestIdleCallback to run when browser is idle, or fallback to setTimeout
+      const runPrecache = () => {
+        precacheAllLessons(userForm).catch(err => console.error('Precache error:', err));
+      };
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(runPrecache, { timeout: 5000 });
+      } else {
+        setTimeout(runPrecache, 2000);
+      }
+    }
+  }, [loading, subjectsData, userForm]);
+
+  // Load topics when a subject is selected
   useEffect(() => {
     if (selectedSubject && selectionStep === 'topic') {
       const loadTopics = async () => {
