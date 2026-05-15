@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle, Clock, FileText, Lightbulb, Target, ChevronLeft, ChevronRight, Video, BookOpen, MoreHorizontal, HelpCircle, Award, ExternalLink } from 'lucide-react';
+import { ArrowLeft, CheckCircle, FileText, Lightbulb, Target, ChevronLeft, ChevronRight, Video, BookOpen, MoreHorizontal, HelpCircle, Award, ExternalLink } from 'lucide-react';
 import api from '../services/api';
+import { getLessonsBySubjectAndForm } from '../services/lessonService';
 import { cacheLesson } from '../services/cache';
 
 export const LessonPage = () => {
@@ -26,17 +27,23 @@ export const LessonPage = () => {
         const decodedTopic = decodeURIComponent(topic);
         const decodedSubject = decodeURIComponent(subject);
 
-        const lessonsRes = await api.get(`/lessons/subject/${encodeURIComponent(decodedSubject)}?form=${encodeURIComponent(userForm)}`);
-        const lessons = lessonsRes.data.data;
-        const topicLessons = lessons.filter(l => l.topic === decodedTopic).sort((a,b) => a.lessonNumber - b.lessonNumber);
+        // Use the service function that handles offline caching
+        const allLessonsForSubject = await getLessonsBySubjectAndForm(decodedSubject, userForm);
         
+        // Filter lessons for the current topic
+        const topicLessons = allLessonsForSubject
+          .filter(l => l.topic === decodedTopic)
+          .sort((a, b) => a.lessonNumber - b.lessonNumber);
+
         if (!topicLessons.length) {
           setError('No lessons found for this topic');
           setLoading(false);
           return;
         }
+        
         setAllLessons(topicLessons);
         
+        // Fetch topics list (could also be cached)
         const topicsRes = await api.get(`/lessons/topics/${encodeURIComponent(decodedSubject)}/${encodeURIComponent(userForm)}`);
         const topics = topicsRes.data;
         setAllTopics(topics);
@@ -72,7 +79,7 @@ export const LessonPage = () => {
       });
       setCurrentIndex(currentIndex - 1);
       setCurrentLesson(prevLesson);
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     }
   };
 
@@ -85,7 +92,7 @@ export const LessonPage = () => {
       });
       setCurrentIndex(currentIndex + 1);
       setCurrentLesson(nextLesson);
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     }
   };
 
@@ -162,52 +169,47 @@ export const LessonPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 pb-20">
-<div className="bg-white shadow-md sticky top-0 z-30">
-  <div className="px-5 py-4 flex items-center justify-between max-w-6xl mx-auto">
-    {/* Left: Back button – same position as on topics list */}
-    <button 
-      onClick={() => navigate(-1)} 
-      className="p-2 hover:bg-gray-100 rounded-xl text-[#1a365d] transition-colors"
-      aria-label="Go back"
-    >
-      <ArrowLeft size={22} />
-    </button>
-
-    {/* Center: Topic title */}
-    <h1 className="text-base md:text-lg font-black text-[#1a365d] text-center">
-      {currentLesson.lessonTitle}
-    </h1>
-
-    {/* Right: Previous/Next navigation */}
-    <div className="flex gap-2">
-      <button 
-        onClick={goToPrevious} 
-        disabled={currentIndex === 0} 
-        className={`p-2 rounded-lg transition-colors ${
-          currentIndex === 0 
-            ? 'text-gray-300 cursor-not-allowed' 
-            : 'text-[#1a365d] hover:bg-gray-100'
-        }`}
-      >
-        <ChevronLeft size={20} />
-      </button>
-      <span className="text-xs text-gray-500 self-center">
-        {currentIndex+1}/{allLessons.length}
-      </span>
-      <button 
-        onClick={goToNext} 
-        disabled={currentIndex === allLessons.length-1} 
-        className={`p-2 rounded-lg transition-colors ${
-          currentIndex === allLessons.length-1 
-            ? 'text-gray-300 cursor-not-allowed' 
-            : 'text-[#1a365d] hover:bg-gray-100'
-        }`}
-      >
-        <ChevronRight size={20} />
-      </button>
-    </div>
-  </div>
-</div>
+      <div className="bg-white shadow-md sticky top-0 z-30">
+        <div className="px-5 py-4 flex items-center justify-between max-w-6xl mx-auto">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="p-2 hover:bg-gray-100 rounded-xl text-[#1a365d] transition-colors"
+            aria-label="Go back"
+          >
+            <ArrowLeft size={22} />
+          </button>
+          <h1 className="text-base md:text-lg font-black text-[#1a365d] text-center">
+            {currentLesson.lessonTitle}
+          </h1>
+          <div className="flex gap-2">
+            <button 
+              onClick={goToPrevious} 
+              disabled={currentIndex === 0} 
+              className={`p-2 rounded-lg transition-colors ${
+                currentIndex === 0 
+                  ? 'text-gray-300 cursor-not-allowed' 
+                  : 'text-[#1a365d] hover:bg-gray-100'
+              }`}
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <span className="text-xs text-gray-500 self-center">
+              {currentIndex+1}/{allLessons.length}
+            </span>
+            <button 
+              onClick={goToNext} 
+              disabled={currentIndex === allLessons.length-1} 
+              className={`p-2 rounded-lg transition-colors ${
+                currentIndex === allLessons.length-1 
+                  ? 'text-gray-300 cursor-not-allowed' 
+                  : 'text-[#1a365d] hover:bg-gray-100'
+              }`}
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div className="max-w-4xl mx-auto px-5 py-8 space-y-8">
         {/* Introduction */}
