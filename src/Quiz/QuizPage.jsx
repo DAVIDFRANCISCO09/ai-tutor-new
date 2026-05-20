@@ -35,19 +35,7 @@ export default function QuizPage() {
     else setLoading(false);
   }, [subject, topic, lesson]);
 
-  const saveProgress = async (percent) => {
-    try {
-      await api.post('/progress/complete', {
-        subject: subject,
-        lessonId: lesson?.lessonId,
-        lessonTitle: lesson?.lessonTitle || topic,
-        topic: topic,   
-        score: percent
-      });
-    } catch (err) {
-      console.error('Failed to save progress', err);
-    }
-  };
+  
 
   const handleSubmit = () => {
     if (!selected) {
