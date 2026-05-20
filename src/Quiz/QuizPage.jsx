@@ -6,7 +6,34 @@ import api from '../services/api';
 import toast from 'react-hot-toast';
 import { ArrowLeft, RotateCcw, ChevronRight } from 'lucide-react';
 
+export default function QuizPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { subject, topic, lesson, allLessons, currentLessonIndex, allTopics, currentTopicIndex, userForm } = location.state || {};
+  const [questions, setQuestions] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  const [selected, setSelected] = useState('');
+  const [feedback, setFeedback] = useState('');
+  const [completed, setCompleted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [score, setScore] = useState(0);
 
+  useEffect(() => {
+    const loadQuiz = async () => {
+      try {
+        const content = lesson?.detailedContent || '';
+        const qs = await generateQuiz(subject, topic, content);
+        setQuestions(qs);
+      } catch (err) {
+        toast.error('Failed to generate quiz');
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (subject && topic) loadQuiz();
+    else setLoading(false);
+  }, [subject, topic, lesson]);
 
   const saveProgress = async (percent) => {
     try {
