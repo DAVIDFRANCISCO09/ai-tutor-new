@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { generateQuiz } from '../services/quizService';
@@ -63,43 +64,7 @@ export default function QuizPage() {
       correctAnswer: questions[currentIndex].correct,
       explanation: questions[currentIndex].explanation
     }]);
-    if (isCorrect) setScore(score + 1);
-    setFeedback(isCorrect ? ' Correct!' : ` Incorrect. Correct answer: ${questions[currentIndex].correct}`);
-    setTimeout(() => {
-      if (currentIndex + 1 >= questions.length) {
-        setCompleted(true);
-        const percent = Math.round(((score + (isCorrect ? 1 : 0)) / questions.length) * 100);
-        saveProgress(percent);
-      } else {
-        setCurrentIndex(currentIndex + 1);
-        setSelected('');
-        setFeedback('');
-      }
-    }, 1500);
-  };
-  const isCorrect = selected === questions[currentIndex].correct;
-    setAnswers([...answers, {
-      question: questions[currentIndex].question,
-      userAnswer: selected,
-      correct: isCorrect,
-      correctAnswer: questions[currentIndex].correct,
-      explanation: questions[currentIndex].explanation
-    }]);
-    if (isCorrect) setScore(score + 1);
-    setFeedback(isCorrect ? ' Correct!' : ` Incorrect. Correct answer: ${questions[currentIndex].correct}`);
-    setTimeout(() => {
-      if (currentIndex + 1 >= questions.length) {
-        setCompleted(true);
-        const percent = Math.round(((score + (isCorrect ? 1 : 0)) / questions.length) * 100);
-        saveProgress(percent);
-      } else {
-        setCurrentIndex(currentIndex + 1);
-        setSelected('');
-        setFeedback('');
-      }
-    }, 1500);
-  };
-
+    
   const handleRetake = () => {
     setCurrentIndex(0);
     setAnswers([]);
