@@ -146,13 +146,7 @@ export default function QuizPage() {
     );
   }
 
-  if (!questions.length) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="text-center text-gray-600 text-lg">No questions available. Please try again.</div>
-      </div>
-    );
-  }
+  
 
   // QUIZ RESULTS VIEW
   if (completed) {
