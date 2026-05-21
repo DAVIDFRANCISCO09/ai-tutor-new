@@ -126,7 +126,9 @@ export default function QuizPage() {
         return;
       }
     }
-  
+    navigate('/dashboard');
+    toast.success(`Subject "${subject}" completed!! Choose another subject to continue learning.`);
+  };
 
   const handleLogout = () => {
     localStorage.clear();
