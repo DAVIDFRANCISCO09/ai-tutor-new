@@ -107,7 +107,29 @@ export default function QuizPage() {
         toast.success(`Moving to next lesson: ${allLessons[nextLessonIndex].lessonTitle}`);
         return;
       }
-    
+    }
+    if (allTopics && currentTopicIndex !== undefined) {
+      const nextTopicIndex = currentTopicIndex + 1;
+      if (nextTopicIndex < allTopics.length) {
+        const nextTopic = allTopics[nextTopicIndex];
+        navigate(`/lesson/${encodeURIComponent(subject)}/${encodeURIComponent(nextTopic.topic)}`, {
+          state: {
+            subject: subject,
+            topic: nextTopic.topic,
+            lesson: null,
+            allTopics: allTopics,
+            currentTopicIndex: nextTopicIndex,
+            userForm: userForm
+          }
+        });
+        toast.success(`Topic completed! Moving to next topic: ${nextTopic.topic}`);
+        return;
+      }
+    }
+    navigate('/dashboard');
+    toast.success(`Subject "${subject}" completed!! Choose another subject to continue learning.`);
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
