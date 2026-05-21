@@ -88,26 +88,7 @@ export default function QuizPage() {
     setScore(0);
   };
 
-  const handleNextContent = () => {
-    if (allLessons && currentLessonIndex !== undefined) {
-      const nextLessonIndex = currentLessonIndex + 1;
-      if (nextLessonIndex < allLessons.length) {
-        navigate(`/lesson/${encodeURIComponent(subject)}/${encodeURIComponent(topic)}?lessonId=${allLessons[nextLessonIndex].lessonId}`, {
-          state: {
-            subject: subject,
-            topic: topic,
-            lesson: allLessons[nextLessonIndex],
-            allLessons: allLessons,
-            currentIndex: nextLessonIndex,
-            allTopics: allTopics,
-            currentTopicIndex: currentTopicIndex,
-            userForm: userForm
-          }
-        });
-        toast.success(`Moving to next lesson: ${allLessons[nextLessonIndex].lessonTitle}`);
-        return;
-      }
-    }
+  
     if (allTopics && currentTopicIndex !== undefined) {
       const nextTopicIndex = currentTopicIndex + 1;
       if (nextTopicIndex < allTopics.length) {
