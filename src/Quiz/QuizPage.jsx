@@ -243,27 +243,7 @@ if (hasMoreLessons) {
               ))}
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-4 justify-center">
-              <button
-                onClick={handleRetake}
-                className="flex items-center gap-2 bg-[#1a365d] text-white px-6 py-3 rounded-xl font-semibold text-base shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-[#1a365d] focus:ring-offset-2 active:scale-[0.98] transition-all"
-              >
-                <RotateCcw size={18} />
-                Retake Quiz
-              </button>
-              <button
-                onClick={nextButtonAction}
-                className="flex items-center gap-2 bg-white text-[#1a365d] px-6 py-3 rounded-xl font-semibold text-base border-2 border-[#1a365d] shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1a365d] focus:ring-offset-2 active:scale-[0.98] transition-all"
-              >
-                <ChevronRight size={18} />
-                {nextButtonText}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+          
 
   // ========================
   // ACTIVE QUIZ VIEW (compact)
