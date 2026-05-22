@@ -208,40 +208,7 @@ if (hasMoreLessons) {
           </button>
         </header>
 
-        <div className="flex-1 flex items-center justify-center p-4 md:p-6">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl p-6 md:p-8">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-[#1a365d] to-[#2a4a7a] text-white mb-4 shadow-lg">
-                <span className="text-3xl font-bold">{score}/{questions.length}</span>
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Quiz Completed!</h2>
-              <p className={`text-xl md:text-2xl font-bold mt-2 ${passColor}`}>{percent}% – {message}</p>
-              <p className="text-sm text-gray-500 mt-2">{infoMessage}</p>
-            </div>
-
-            <div className="space-y-6">
-              {answers.map((ans, idx) => (
-                <div key={idx} className="border-b border-gray-200 pb-4">
-                  <p className="font-bold text-gray-800 text-base md:text-lg">{idx + 1}. {ans.question}</p>
-                  <div className="mt-2 space-y-1">
-                    <p className="text-base text-gray-700">
-                      <span className="font-semibold">Your answer:</span>{' '}
-                      <span className={ans.correct ? 'text-green-700 font-semibold' : 'text-red-700 font-semibold'}>
-                        {ans.userAnswer}
-                      </span>
-                    </p>
-                    {!ans.correct && (
-                      <p className="text-base text-green-700">
-                        <span className="font-semibold">Correct answer:</span> {ans.correctAnswer}
-                      </p>
-                    )}
-                    <p className="text-base text-gray-600 mt-2 leading-relaxed">
-                      <span className="font-semibold">Explanation:</span> {ans.explanation}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+       
 
             <div className="mt-8 flex flex-wrap gap-4 justify-center">
               <button
