@@ -355,14 +355,19 @@ export const LessonPage = () => {
           </motion.section>
         )}
 
-        {/* Summary */}
+        {/* Summary 
         <motion.section className="bg-gradient-to-r from-[#1a365d] to-[#15304f] rounded-2xl shadow-lg p-6 text-white">
           <h2 className="text-sm font-bold uppercase tracking-wide mb-3 opacity-90">Summary</h2>
           <p className="text-base md:text-lg font-medium leading-relaxed">{currentLesson.summary}</p>
-        </motion.section>
+        </motion.section>*/}
+
+        <motion.section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-sm p-6 border border-blue-100">
+  <h2 className="text-sm font-bold uppercase tracking-wide mb-3 text-[#1a365d]">Summary</h2>
+  <p className="text-base md:text-lg font-medium text-gray-800 leading-relaxed">{currentLesson.summary}</p>
+</motion.section>
 
         {/* Action Buttons */}
-        <motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+        <motion.div className="grid grid-cols-2 gap-4 pt-4">
           <button
             onClick={handleDiscuss}
             className="flex items-center justify-center gap-3 bg-[#1a365d] text-white py-4 rounded-xl font-bold text-base shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-[#1a365d] focus:ring-offset-2 active:scale-[0.98] transition-all duration-200"

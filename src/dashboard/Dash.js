@@ -70,7 +70,7 @@ export const Dash = () => {
       } catch (err) {
         console.error('Failed to load subjects', err);
         if (!navigator.onLine) {
-          setError('You are offline and no subjects have been cached yet. Please connect to the internet and refresh to load subjects.');
+          setError('You are offline. Please connect to the internet and refresh to load subjects.');
         } else {
           setError('Failed to load subjects. Please check your internet connection.');
         }
