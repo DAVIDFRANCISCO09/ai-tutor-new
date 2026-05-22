@@ -155,17 +155,7 @@ export default function QuizPage() {
   }
 
   // QUIZ RESULTS VIEW
-  if (completed) {
-    const percent = Math.round((score / questions.length) * 100);
-    const message = percent >= 80 ? 'Excellent! You\'ve mastered this lesson!' : percent >= 60 ? 'Good job! Keep practicing!' : 'Keep learning! Review the lesson and try again.';
-    const passColor = percent >= 70 ? 'text-green-600' : percent >= 50 ? 'text-yellow-600' : 'text-red-600';
-
-    const hasMoreLessons = allLessons && currentLessonIndex !== undefined && (currentLessonIndex + 1) < allLessons.length;
-    const hasMoreTopics = allTopics && currentTopicIndex !== undefined && (currentTopicIndex + 1) < allTopics.length;
-    let nextButtonText = 'Back to Dashboard';
-    let nextButtonAction = () => navigate('/dashboard');
-    let infoMessage = '';
-
+ 
     if (hasMoreLessons) {
       nextButtonText = 'Next Lesson →';
       nextButtonAction = handleNextContent;
