@@ -43,8 +43,7 @@ function App() {
     <BrowserRouter>
       {isOffline && (
         <div className="bg-amber-500 text-white text-center py-2 text-sm font-medium sticky top-0 z-50">
-          You are offline. You can view cached lessons, past chats.
-          New quizzes and AI chat require internet. Login/Register also need internet.
+          You are offline. You can view lessons, past chats. New quizzes and AI chat require internet. Login/Register also need internet.
         </div>
       )}
       <Toaster position="top-center" />
