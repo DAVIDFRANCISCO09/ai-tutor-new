@@ -130,10 +130,7 @@ export default function QuizPage() {
     toast.success(`Subject "${subject}" completed!! Choose another subject to continue learning.`);
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/');
-  };
+
 
   if (loading) {
     return (
