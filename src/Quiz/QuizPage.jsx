@@ -177,6 +177,17 @@ if (hasMoreLessons) {
     } else {
       infoMessage = ` Subject "${subject}" completed! All topics finished.`;
     }
+if (hasMoreLessons) {
+      nextButtonText = 'Next Lesson →';
+      nextButtonAction = handleNextContent;
+      infoMessage = ` You have ${allLessons.length - (currentLessonIndex + 1)} more lesson(s) in "${topic}".`;
+    } else if (hasMoreTopics) {
+      nextButtonText = 'Next Topic →';
+      nextButtonAction = handleNextContent;
+      infoMessage = ` Topic "${topic}" completed! Next: ${allTopics[currentTopicIndex + 1]?.topic}.`;
+    } else {
+      infoMessage = ` Subject "${subject}" completed! All topics finished.`;
+    }
 
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
