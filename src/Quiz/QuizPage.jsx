@@ -189,24 +189,7 @@ if (hasMoreLessons) {
       infoMessage = ` Subject "${subject}" completed! All topics finished.`;
     }
 
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
-        <header className="bg-white shadow-md px-5 py-3 flex justify-between items-center sticky top-0 z-10">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-[#1a365d] hover:bg-gray-100 px-3 py-2 rounded-lg transition-all"
-          >
-            <ArrowLeft size={20} />
-            <span className="text-sm font-medium"></span>
-          </button>
-          <h1 className="text-lg font-black text-[#1a365d] uppercase">Quiz Results</h1>
-          <button
-            onClick={handleLogout}
-            className="text-gray-500 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg transition-all text-sm font-medium"
-          >
-            Logout
-          </button>
-        </header>
+    
 
         <div className="flex-1 flex items-center justify-center p-4 md:p-6">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl p-6 md:p-8">
