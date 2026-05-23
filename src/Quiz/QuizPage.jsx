@@ -320,4 +320,21 @@ if (hasMoreLessons) {
             ))}
           </div>
    
-          
+  <button
+            onClick={handleSubmit}
+            disabled={!selected}
+            className={`w-full py-2.5 rounded-lg font-semibold text-sm transition ${!selected ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#1a365d] text-white hover:bg-blue-800 active:scale-98'}`}
+          >
+            Submit Answer
+          </button>
+
+          {feedback && (
+            <div className="mt-3 p-3 rounded-lg text-center text-sm bg-gray-100 text-gray-800 border">
+              {feedback}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}        
