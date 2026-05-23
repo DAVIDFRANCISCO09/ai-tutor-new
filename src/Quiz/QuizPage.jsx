@@ -307,7 +307,19 @@ if (hasMoreLessons) {
                     : 'border-gray-200 hover:bg-gray-50'
                 }`}
               >
-               
+             <input
+                  type="radio"
+                  name="quiz"
+                  value={opt}
+                  checked={selected === opt}
+                  onChange={() => setSelected(opt)}
+                  className="w-4 h-4 text-[#1a365d]"
+                />
+                <span className="text-sm sm:text-base text-gray-700 flex-1">{opt}</span>
+              </label>
+            ))}
+          </div>
+   
           <button
             onClick={handleSubmit}
             disabled={!selected}
