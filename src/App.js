@@ -6,9 +6,12 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Chat from './pages/Chat';
+import History from './pages/History';
 import ProgressPage from './components/myprogress/progresstracking';
-import Dash from './dashboard/Dash';
-import LessonPage from './dashboard/LessonPage';
+
+import { Dash } from './dashboard/Dash';
+import { SetupPage } from './dashboard/SetupPage';
+import { LessonPage } from './dashboard/LessonPage';
 import QuizPage from './Quiz/QuizPage';
 import { Toaster } from 'react-hot-toast';
 
