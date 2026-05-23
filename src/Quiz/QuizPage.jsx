@@ -79,7 +79,15 @@ export default function QuizPage() {
     }, 1500);
   };
 
- 
+  const handleRetake = () => {
+    setCurrentIndex(0);
+    setAnswers([]);
+    setSelected('');
+    setFeedback('');
+    setCompleted(false);
+    setScore(0);
+  };
+
   const handleNextContent = () => {
     if (allLessons && currentLessonIndex !== undefined) {
       const nextLessonIndex = currentLessonIndex + 1;
