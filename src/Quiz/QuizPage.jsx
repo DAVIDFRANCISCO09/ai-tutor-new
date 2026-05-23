@@ -268,44 +268,7 @@ if (hasMoreLessons) {
   // ========================
   // ACTIVE QUIZ VIEW (compact)
   // ========================
-  const q = questions[currentIndex];
-  const progressPercent = ((currentIndex + 1) / questions.length) * 100;
 
-  return (
-    <div className="h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col overflow-hidden">
-      <header className="bg-white shadow-sm px-4 py-3 flex justify-between items-center flex-shrink-0">
-        <button onClick={() => navigate(-1)} className="text-[#1a365d] hover:bg-gray-100 p-2 rounded-lg">
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-base font-black text-[#1a365d] uppercase">Quiz: {topic}</h1>
-        <button onClick={handleLogout} className="text-gray-500 hover:text-red-600 p-2 rounded-lg">Logout</button>
-      </header>
-
-      <div className="flex-1 flex items-center justify-center p-4 overflow-y-auto">
-        <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-5 sm:p-6">
-          <div className="mb-5">
-            <div className="flex justify-between text-xs text-gray-500 mb-1">
-              <span>Question {currentIndex + 1} of {questions.length}</span>
-              <span className="font-semibold text-[#1a365d]">Score: {score}</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-1.5">
-              <div className="bg-[#1a365d] h-1.5 rounded-full transition-all" style={{ width: `${progressPercent}%` }}></div>
-            </div>
-          </div>
-
-          <div className="mb-5">
-            <h2 className="text-base sm:text-lg font-bold text-gray-800 leading-relaxed">{q.question}</h2>
-          </div>
-
-          <div className="space-y-2 mb-6">
-            {q.options.map((opt, i) => (
-              <label
-                key={i}
-                className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition ${
-                  selected === opt
-                    ? 'border-[#1a365d] bg-blue-50'
-                    : 'border-gray-200 hover:bg-gray-50'
-                }`}
               >
                 <input
                   type="radio"
