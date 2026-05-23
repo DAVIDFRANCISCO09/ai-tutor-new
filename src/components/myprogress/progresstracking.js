@@ -1,334 +1,338 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LogOut, LayoutDashboard, BarChart3, Sparkles, AlertCircle, RotateCcw, ArrowLeft } from 'lucide-react';
+import api from '../../services/api';
+import { getCachedProgressOverview, cacheProgressOverview } from '../../services/cache';
+import toast from 'react-hot-toast';
 
-const SUBJECTS = [
-  {
-    name: "Agriculture", color: "#639922",
-    topics: [
-      { name: "Agro-forestry", score: 78 },
-      { name: "Agricultural Economics", score: null },
-      { name: "Crop Production", score: 90 },
-      { name: "Farm Structures & Equipment", score: null },
-      { name: "Irrigation & Water Management", score: 65 },
-      { name: "Livestock Management", score: 72 },
-      { name: "Pest & Disease Control", score: null },
-      { name: "Soil Science", score: 85 },
-    ],
-  },
-  {
-    name: "Biology", color: "#1D9E75",
-    topics: [
-      { name: "Cell Structure & Organisation", score: 88 },
-      { name: "Coordination & Response", score: null },
-      { name: "Ecology & Environment", score: null },
-      { name: "Excretion", score: null },
-      { name: "Nutrition in Plants & Animals", score: 72 },
-      { name: "Reproduction", score: null },
-      { name: "Respiration", score: 60 },
-      { name: "Transport in Plants & Animals", score: 55 },
-    ],
-  },
-  {
-    name: "Chemistry", color: "#D85A30",
-    topics: [
-      { name: "Acids, Bases & Salts", score: 65 },
-      { name: "Atomic Structure", score: 80 },
-      { name: "Chemical Bonding", score: 74 },
-      { name: "Electrochemistry", score: null },
-      { name: "Industrial Chemistry", score: null },
-      { name: "Organic Chemistry", score: null },
-      { name: "Redox Reactions", score: 58 },
-      { name: "The Periodic Table", score: 91 },
-    ],
-  },
-  {
-    name: "English", color: "#7C3AED",
-    topics: [
-      { name: "Essay Writing", score: 82 },
-      { name: "Grammar & Usage", score: 70 },
-      { name: "Literature: Drama", score: null },
-      { name: "Literature: Poetry", score: null },
-      { name: "Literature: Prose", score: null },
-      { name: "Oral & Listening Skills", score: 68 },
-      { name: "Reading Comprehension", score: 88 },
-      { name: "Summary Writing", score: 76 },
-    ],
-  },
-  {
-    name: "Mathematics", color: "#BA7517",
-    topics: [
-      { name: "Algebra", score: 76 },
-      { name: "Financial Mathematics", score: null },
-      { name: "Functions & Graphs", score: null },
-      { name: "Geometry & Mensuration", score: 63 },
-      { name: "Numbers & Arithmetic", score: 90 },
-      { name: "Statistics & Probability", score: null },
-      { name: "Trigonometry", score: 55 },
-      { name: "Vectors & Transformations", score: null },
-    ],
-  },
-  {
-    name: "Physics", color: "#378ADD",
-    topics: [
-      { name: "Electricity & Magnetism", score: null },
-      { name: "Energy, Work & Power", score: 62 },
-      { name: "Forces & Motion", score: 58 },
-      { name: "Light & Optics", score: null },
-      { name: "Measurements & Units", score: 95 },
-      { name: "Pressure", score: 70 },
-      { name: "Thermal Physics", score: null },
-      { name: "Waves & Sound", score: null },
-    ],
-  },
-];
-
-function ScoreBar({ score }) {
-  if (score === null) {
-    return (
-      <span style={{ fontSize: 12, color: "#94a3b8", fontStyle: "italic" }}>Not attempted</span>
-    );
-  }
-  const barColor = "#1e293b";
+const ScoreBar = ({ score }) => {
+  if (score === null || score === undefined) return <span className="text-xs text-gray-400 italic">Not attempted</span>;
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, justifyContent: "flex-end" }}>
-      <div style={{ width: 100, height: 6, background: "#e2e8f0", borderRadius: 99, overflow: "hidden" }}>
-        <div style={{ height: "100%", width: `${score}%`, background: barColor, borderRadius: 99 }} />
+    <div className="flex items-center gap-2">
+      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div className="h-full bg-[#1a365d] rounded-full" style={{ width: `${score}%` }} />
       </div>
-      <span style={{ fontSize: 12, fontWeight: 700, color: barColor, minWidth: 40, textAlign: "right" }}>
-        {score}%
-      </span>
+      <span className="text-xs font-bold">{score}%</span>
     </div>
   );
-}
+};
 
-function SubjectDetail({ subject, onBack }) {
-  const attempted = subject.topics.filter(t => t.score !== null);
-  const avgScore = attempted.length > 0
-    ? Math.round(attempted.reduce((a, t) => a + t.score, 0) / attempted.length)
+// Subject Detail Component
+const SubjectDetail = ({ subject, progress, onBack }) => {
+  const navigate = useNavigate();
+  const [loadingLesson, setLoadingLesson] = useState(null);
+  const completed = progress?.completedLessons || [];
+  const total = progress?.totalLessons || 0;
+  const avgScore = completed.length
+    ? completed.reduce((a, t) => a + (t.score || 0), 0) / completed.length
     : null;
+  const needRevision = completed.filter(lesson => (lesson.score || 0) < 60);
+
+  const handleReview = useCallback(async (lesson) => {
+    const { subject: lessonSubject, topic: lessonTopic, lessonId } = lesson;
+    if (lessonSubject && lessonTopic && lessonId) {
+      navigate(`/lesson/${encodeURIComponent(lessonSubject)}/${encodeURIComponent(lessonTopic)}?lessonId=${lessonId}`);
+      return;
+    }
+    if (!lessonId) {
+      toast.error('Lesson ID missing – cannot open review.');
+      return;
+    }
+    setLoadingLesson(lessonId);
+    try {
+      const res = await api.get(`/lessons/${encodeURIComponent(subject)}/${encodeURIComponent(lessonId)}`);
+      const lessonData = res.data;
+      if (!lessonData || !lessonData.topic) throw new Error('Lesson topic not found');
+      navigate(`/lesson/${encodeURIComponent(subject)}/${encodeURIComponent(lessonData.topic)}?lessonId=${lessonId}`);
+    } catch (err) {
+      toast.error('Could not load lesson details for review.');
+    } finally {
+      setLoadingLesson(null);
+    }
+  }, [navigate, subject]);
 
   return (
     <div>
-      <button
-        onClick={onBack}
-        style={{
-          background: "#1a3a6b", color: "#fff", border: "none",
-          borderRadius: 8, padding: "8px 16px", fontSize: 13,
-          fontWeight: 600, cursor: "pointer", marginBottom: 24,
-          display: "flex", alignItems: "center", gap: 6
-        }}
-      >
-        ← Back to Subjects
-      </button>
-
-      <div style={{
-        background: "#1a3a6b", borderRadius: 14, padding: "24px",
-        marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center"
-      }}>
-        <div>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: "#fff", margin: 0, marginBottom: 6 }}>
-            {subject.name}
-          </h2>
-          <p style={{ color: "#94a3b8", fontSize: 13, margin: 0 }}>
-            {attempted.length} of {subject.topics.length} topics attempted
-          </p>
-        </div>
-        {avgScore !== null && (
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 36, fontWeight: 800, color: "#fff" }}>{avgScore}%</div>
-            <div style={{ fontSize: 12, color: "#94a3b8" }}>average score</div>
-          </div>
-        )}
+      <div className="bg-[#1a365d] rounded-xl p-5 mb-5 text-white">
+        <h2 className="text-2xl font-bold">{subject}</h2>
+        <p className="text-sm opacity-80">{completed.length} of {total} lessons completed</p>
+        {avgScore !== null && <div className="mt-2 text-2xl font-bold">{avgScore.toFixed(1)}% avg score</div>}
       </div>
 
-      <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, overflow: "hidden" }}>
-        <div style={{
-          padding: "12px 20px", background: "#f8fafc",
-          borderBottom: "1px solid #e2e8f0",
-          display: "flex", justifyContent: "space-between"
-        }}>
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>Topic</span>
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>Quiz Result</span>
+      <div className="bg-white border rounded-xl overflow-hidden mb-6">
+        <div className="flex justify-between px-4 py-2 bg-gray-50 border-b font-bold text-gray-500 text-xs">
+          <span>Lesson</span><span>Score</span>
         </div>
-        {subject.topics.map((t, i) => (
-          <div key={t.name} style={{
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-            padding: "14px 20px",
-            borderBottom: i < subject.topics.length - 1 ? "1px solid #f1f5f9" : "none",
-            background: i % 2 === 0 ? "#fff" : "#fafafa"
-          }}>
-            <span style={{ fontSize: 14, color: "#1e293b", fontWeight: 500 }}>{t.name}</span>
-            <ScoreBar score={t.score} />
+        {completed.map((lesson, i) => (
+          <div key={lesson.lessonId || i} className="flex justify-between px-4 py-2 border-b last:border-0 bg-white even:bg-gray-50">
+            <span>{lesson.lessonTitle}</span>
+            <ScoreBar score={lesson.score} />
           </div>
         ))}
       </div>
+
+      {needRevision.length > 0 && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+          <div className="flex items-center gap-2 text-yellow-800 mb-3">
+            <AlertCircle size={18} />
+            <h3 className="font-bold">Focus on these topics (need revision)</h3>
+          </div>
+          <ul className="space-y-2">
+            {needRevision.map(lesson => (
+              <li key={lesson.lessonId} className="flex justify-between items-center bg-white rounded-lg p-2 border border-yellow-100">
+                <div>
+                  <p className="text-sm font-medium">{lesson.lessonTitle}</p>
+                  <p className="text-xs text-gray-500">Score: {lesson.score}% – below 60%</p>
+                </div>
+                <button
+                  onClick={() => handleReview(lesson)}
+                  disabled={loadingLesson === lesson.lessonId}
+                  className="flex items-center gap-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 text-xs px-3 py-1.5 rounded-lg transition disabled:opacity-50"
+                >
+                  <RotateCcw size={12} />
+                  {loadingLesson === lesson.lessonId ? 'Loading...' : 'Review'}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-yellow-700 mt-3">Re‑study these lessons and retake the quizzes to improve your understanding.</p>
+        </div>
+      )}
     </div>
   );
-}
+};
 
-function TopicsOverview({ onBack }) {
+// Topics Overview Component
+const TopicsOverview = ({ allProgress }) => {
+  const allLessons = allProgress.flatMap(p => p.completedLessons || []);
+  if (!allLessons.length) return <p className="text-center text-gray-500">No lessons completed yet. Take a quiz to track progress!</p>;
   return (
     <div>
-      <button
-        onClick={onBack}
-        style={{
-          background: "#1a3a6b", color: "#fff", border: "none",
-          borderRadius: 8, padding: "8px 16px", fontSize: 13,
-          fontWeight: 600, cursor: "pointer", marginBottom: 24,
-          display: "flex", alignItems: "center", gap: 6
-        }}
-      >
-        ← Back to Subjects
-      </button>
-
-      <div style={{
-        background: "#1a3a6b", borderRadius: 14, padding: "24px", marginBottom: 24
-      }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: "#fff", margin: 0, marginBottom: 6 }}>
-          Topics Attempted
-        </h2>
-        <p style={{ color: "#94a3b8", fontSize: 13, margin: 0 }}>
-          All topics you have covered across every subject
-        </p>
+      <div className="bg-[#1a365d] rounded-xl p-5 mb-5 text-white">
+        <h2 className="text-2xl font-bold">All Completed Lessons</h2>
       </div>
+      {allProgress.map(subj => subj.completedLessons?.length > 0 && (
+        <div key={subj.subject} className="bg-white border rounded-xl overflow-hidden mb-4">
+          <div className="bg-[#1a365d] px-4 py-2 text-white font-bold">{subj.subject}</div>
+          {subj.completedLessons.map((lesson, i) => (
+            <div key={lesson.lessonId || i} className="flex justify-between px-4 py-2 border-b last:border-0">
+              <span>{lesson.lessonTitle}</span>
+              <ScoreBar score={lesson.score} />
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {SUBJECTS.map(s => {
-          const attempted = s.topics.filter(t => t.score !== null);
-          if (attempted.length === 0) return null;
-          return (
-            <div key={s.name} style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, overflow: "hidden" }}>
-              <div style={{
-                padding: "12px 20px",
-                background: "#1a3a6b",
-                display: "flex", justifyContent: "space-between", alignItems: "center"
-              }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>{s.name}</span>
-                <span style={{ fontSize: 12, color: "#94a3b8" }}>{attempted.length} topic{attempted.length > 1 ? "s" : ""} covered</span>
+// MAIN ProgressPage Component
+export default function ProgressPage() {
+  const navigate = useNavigate();
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [showAll, setShowAll] = useState(false);
+  const [progress, setProgress] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({ completed: 0, total: 0, avgScore: 0 });
+  const [menuOpen, setMenuOpen] = useState(false);
+  const userName = localStorage.getItem('userName') || 'Student';
+  const userForm = localStorage.getItem('userForm') || 'Form 1';
+
+  // Load cached progress immediately, then fetch fresh
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadProgress = async () => {
+      // Try cached data first
+      const cached = await getCachedProgressOverview();
+      if (cached && isMounted) {
+        setProgress(cached);
+        const totalCompleted = cached.reduce((s, p) => s + (p.completedLessons?.length || 0), 0);
+        const totalLessons = cached.reduce((s, p) => s + (p.totalLessons || 0), 0);
+        const allScores = cached.flatMap(p => p.completedLessons?.map(l => l.score) || []);
+        const avg = allScores.length ? allScores.reduce((a, b) => a + b, 0) / allScores.length : 0;
+        setStats({ completed: totalCompleted, total: totalLessons, avgScore: avg });
+        setLoading(false);
+      }
+
+      // If online, fetch fresh data and update cache
+      if (navigator.onLine) {
+        try {
+          const res = await api.get('/progress/overview/all');
+          const freshData = res.data;
+          if (isMounted) {
+            setProgress(freshData);
+            const totalCompleted = freshData.reduce((s, p) => s + (p.completedLessons?.length || 0), 0);
+            const totalLessons = freshData.reduce((s, p) => s + (p.totalLessons || 0), 0);
+            const allScores = freshData.flatMap(p => p.completedLessons?.map(l => l.score) || []);
+            const avg = allScores.length ? allScores.reduce((a, b) => a + b, 0) / allScores.length : 0;
+            setStats({ completed: totalCompleted, total: totalLessons, avgScore: avg });
+            setLoading(false);
+            await cacheProgressOverview(freshData);
+          }
+        } catch (err) {
+          console.error('Failed to fetch fresh progress', err);
+          if (!cached && isMounted) {
+            setLoading(false);
+            toast.error('Failed to load progress data');
+          }
+        }
+      } else if (!cached && isMounted) {
+        // Offline and no cache
+        setLoading(false);
+      }
+    };
+
+    loadProgress();
+    return () => { isMounted = false; };
+  }, []);
+
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to logout?')) {
+      localStorage.clear();
+      navigate('/');
+    }
+  };
+
+  const handleBack = () => {
+    if (selectedSubject) {
+      setSelectedSubject(null);
+    } else if (showAll) {
+      setShowAll(false);
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
+  const showBackButton = selectedSubject !== null || showAll !== false;
+
+  return (
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+      {/* Header – always rendered immediately */}
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
+        <div className="px-5 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {showBackButton ? (
+              <button onClick={handleBack} className="p-2 hover:bg-gray-100 rounded-xl text-[#1a365d]">
+                <ArrowLeft size={22} />
+              </button>
+            ) : (
+              <div className="w-9 h-9 bg-[#1a365d] rounded-xl flex items-center justify-center shadow-md">
+                <span className="text-white font-black text-sm">SM</span>
               </div>
-              {attempted.map((t, i) => (
-                <div key={t.name} style={{
-                  display: "flex", justifyContent: "space-between", alignItems: "center",
-                  padding: "14px 20px",
-                  borderBottom: i < attempted.length - 1 ? "1px solid #f1f5f9" : "none",
-                  background: i % 2 === 0 ? "#fff" : "#fafafa"
-                }}>
-                  <span style={{ fontSize: 14, color: "#1e293b", fontWeight: 500 }}>{t.name}</span>
-                  <ScoreBar score={t.score} />
-                </div>
+            )}
+            <h1 className="text-base font-black text-[#1a365d] tracking-tight uppercase">Smart Mphunzitsi</h1>
+          </div>
+
+          {!showBackButton && (
+            <nav className="hidden md:flex items-center gap-1">
+              <button onClick={() => navigate('/dashboard')} className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                <LayoutDashboard size={18} /><span>Home</span>
+              </button>
+              <button onClick={() => navigate('/progress')} className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-blue-50 text-[#1a365d]">
+                <BarChart3 size={18} /><span>Progress</span>
+              </button>
+              <button onClick={() => navigate('/chat')} className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                <Sparkles size={18} /><span>Smart Mphunzitsi</span>
+              </button>
+            </nav>
+          )}
+
+          <div className="flex items-center gap-3">
+            <div className="hidden xl:flex flex-col items-end">
+              <p className="text-xs font-semibold text-gray-700">{userName}</p>
+              <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">{userForm}</span>
+            </div>
+            <button onClick={handleLogout} className="hidden md:flex items-center gap-2 px-3 py-2 text-xs font-bold text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
+              <LogOut size={16} /><span>Logout</span>
+            </button>
+            <button onClick={() => setMenuOpen(o => !o)} className="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-xl hover:bg-gray-100">
+              <motion.span animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }} className="block w-5 h-0.5 bg-gray-700 rounded-full origin-center" />
+              <motion.span animate={{ opacity: menuOpen ? 0 : 1 }} className="block w-5 h-0.5 bg-gray-700 rounded-full" />
+              <motion.span animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -7 : 0 }} className="block w-5 h-0.5 bg-gray-700 rounded-full origin-center" />
+            </button>
+          </div>
+        </div>
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden overflow-hidden border-t border-gray-100 bg-white">
+              <div className="px-5 py-3 bg-[#1a365d]/5 flex items-center gap-3">
+                <div className="w-8 h-8 bg-[#1a365d] rounded-lg flex items-center justify-center"><span className="text-white font-black text-xs">{userName[0]}</span></div>
+                <div><p className="text-xs font-bold text-[#1a365d]">{userName}</p><div className="flex gap-1.5 mt-0.5"><span className="text-[10px] font-black uppercase text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-md">{userForm}</span></div></div>
+              </div>
+              <nav className="px-3 py-2">
+                <button onClick={() => { navigate('/dashboard'); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left text-gray-600 hover:bg-gray-50">
+                  <LayoutDashboard size={18} /><span>Home</span>
+                </button>
+                <button onClick={() => { navigate('/progress'); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left bg-blue-50 text-[#1a365d]">
+                  <BarChart3 size={18} /><span>Progress</span>
+                </button>
+                <button onClick={() => { navigate('/chat'); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left text-gray-600 hover:bg-gray-50">
+                  <Sparkles size={18} /><span>Smart Mphunzitsi</span>
+                </button>
+                <button onClick={() => { handleLogout(); setMenuOpen(false); }}  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-all text-left"
+                >
+                  <LogOut size={16} /><span>Logout</span>
+                </button>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Content area – loading skeleton only here, not the header */}
+      <div className="max-w-3xl mx-auto p-4">
+        {loading && !progress.length ? (
+          <div className="animate-pulse space-y-4">
+            <div className="h-10 bg-gray-200 rounded w-1/3"></div>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="h-20 bg-gray-200 rounded"></div>
+              <div className="h-20 bg-gray-200 rounded"></div>
+              <div className="h-20 bg-gray-200 rounded"></div>
+            </div>
+            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+            <div className="space-y-2">
+              <div className="h-16 bg-gray-200 rounded"></div>
+              <div className="h-16 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        ) : showAll ? (
+          <TopicsOverview allProgress={progress} />
+        ) : selectedSubject ? (
+          <SubjectDetail
+            subject={selectedSubject}
+            progress={progress.find(p => p.subject === selectedSubject)}
+            onBack={() => setSelectedSubject(null)}
+          />
+        ) : (
+          <>
+            <h1 className="text-3xl font-bold text-[#1a365d] mb-2">My Progress</h1>
+            <div className="grid grid-cols-3 gap-3 my-6">
+              <div className="bg-[#1a365d] text-white p-4 rounded-xl">
+                <p className="text-xs">Subjects</p>
+                <p className="text-2xl font-bold">{progress.length}</p>
+              </div>
+              <div onClick={() => setShowAll(true)} className="bg-[#1a365d] text-white p-4 rounded-xl cursor-pointer hover:opacity-90 transition">
+                <p className="text-xs">Lessons Done</p>
+                <p className="text-2xl font-bold">{stats.completed}/{stats.total}</p>
+              </div>
+              <div className="bg-[#1a365d] text-white p-4 rounded-xl">
+                <p className="text-xs">Avg Score</p>
+                <p className="text-2xl font-bold">{stats.avgScore.toFixed(1)}%</p>
+              </div>
+            </div>
+            <h2 className="text-xl font-bold mb-3">Subjects</h2>
+            <div className="space-y-2">
+              {progress.map(p => (
+                <button key={p.subject} onClick={() => setSelectedSubject(p.subject)} className="w-full bg-white border rounded-xl p-3 flex justify-between items-center hover:shadow transition text-left">
+                  <span className="font-bold">{p.subject}</span>
+                  <span>{p.completedLessons?.length || 0}/{p.totalLessons} lessons</span>
+                </button>
               ))}
             </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-export default function ProgressPage() {
-  const [selectedSubject, setSelectedSubject] = useState(null);
-  const [showTopicsOverview, setShowTopicsOverview] = useState(false);
-
-  const totalDone = SUBJECTS.flatMap(s => s.topics).filter(t => t.score !== null).length;
-  const totalTopics = SUBJECTS.flatMap(s => s.topics).length;
-  const allScores = SUBJECTS.flatMap(s => s.topics).filter(t => t.score !== null).map(t => t.score);
-  const avgScore = allScores.length > 0
-    ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)
-    : 0;
-
-  if (showTopicsOverview) {
-    return (
-      <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 800, margin: "0 auto", padding: "24px 16px", background: "#fff", minHeight: "100vh" }}>
-        <TopicsOverview onBack={() => setShowTopicsOverview(false)} />
-      </div>
-    );
-  }
-
-  if (selectedSubject) {
-    return (
-      <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 800, margin: "0 auto", padding: "24px 16px", background: "#fff", minHeight: "100vh" }}>
-        <SubjectDetail subject={selectedSubject} onBack={() => setSelectedSubject(null)} />
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 800, margin: "0 auto", padding: "24px 16px", background: "#fff", minHeight: "100vh" }}>
-
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 36, fontWeight: 800, color: "#1a3a6b", margin: 0 }}>My Progress</h1>
-        <p style={{ color: "#64748b", fontSize: 14, marginTop: 6 }}>Malawian Secondary School Syllabus — Click a subject to view your quiz results</p>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginBottom: 32 }}>
-        {[
-          { label: "Subjects", value: SUBJECTS.length, clickable: false },
-          { label: "Topics Attempted", value: `${totalDone} / ${totalTopics}`, clickable: true },
-          { label: "Avg Quiz Score", value: `${avgScore}%`, clickable: false },
-          { label: "Study Streak", value: "7 days", clickable: false },
-        ].map(s => (
-          <div
-            key={s.label}
-            onClick={s.clickable ? () => setShowTopicsOverview(true) : undefined}
-            style={{
-              background: "#1a3a6b", borderRadius: 12, padding: "16px",
-              cursor: s.clickable ? "pointer" : "default",
-              transition: "opacity 0.2s",
-              position: "relative"
-            }}
-            onMouseEnter={e => { if (s.clickable) e.currentTarget.style.opacity = "0.85"; }}
-            onMouseLeave={e => { if (s.clickable) e.currentTarget.style.opacity = "1"; }}
-          >
-            <p style={{ fontSize: 11, color: "#94a3b8", marginBottom: 4, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>{s.label}</p>
-            <p style={{ fontSize: 24, fontWeight: 800, color: "#fff", margin: 0 }}>{s.value}</p>
-            {s.clickable && (
-              <span style={{ position: "absolute", top: 12, right: 12, color: "#94a3b8", fontSize: 14 }}>›</span>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1a3a6b", marginBottom: 14 }}>Subjects</h2>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {SUBJECTS.map(s => {
-          const attempted = s.topics.filter(t => t.score !== null).length;
-          const subjectAvg = attempted > 0
-            ? Math.round(s.topics.filter(t => t.score !== null).reduce((a, t) => a + t.score, 0) / attempted)
-            : null;
-          const progress = Math.round((attempted / s.topics.length) * 100);
-
-          return (
-            <button
-              key={s.name}
-              onClick={() => setSelectedSubject(s)}
-              style={{
-                background: "#1a3a6b", border: "none", borderRadius: 12,
-                padding: "18px 20px", cursor: "pointer", textAlign: "left",
-                display: "flex", justifyContent: "space-between", alignItems: "center"
-              }}
-              onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
-              onMouseLeave={e => e.currentTarget.style.opacity = "1"}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{s.name}</div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <div style={{ width: 80, height: 4, background: "#0a1e3d", borderRadius: 99, overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: `${progress}%`, background: "#fff", borderRadius: 99 }} />
-                    </div>
-                    <span style={{ fontSize: 12, color: "#94a3b8" }}>{attempted}/{s.topics.length} topics done</span>
-                  </div>
-                </div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                {subjectAvg !== null && (
-                  <span style={{ fontSize: 18, fontWeight: 800, color: "#fff" }}>{subjectAvg}%</span>
-                )}
-                <span style={{ color: "#94a3b8", fontSize: 18 }}>›</span>
-              </div>
-            </button>
-          );
-        })}
+          </>
+        )}
       </div>
     </div>
   );

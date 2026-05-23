@@ -11,20 +11,18 @@ function ResetPassword() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // ✅ Updated: any password with at least 8 characters
   const isStrongPassword = (pwd) => pwd.length >= 8;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setMessage('');
-    
-    // ✅ Updated error message
+
     if (!isStrongPassword(password)) {
       return setError('Password must be at least 8 characters long');
     }
     if (password !== confirmPassword) return setError('Passwords do not match');
-    
+
     setLoading(true);
     try {
       await api.post(`/auth/reset-password/${token}`, { password });
@@ -43,31 +41,37 @@ function ResetPassword() {
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#0a1f44] mb-2">Reset Password</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-[#0a1f44] font-medium mb-2">New Password</label>
-            <input 
-              type="password" 
-              placeholder="New password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              className="w-full border border-gray-300 px-4 py-3 rounded-lg" 
-              required 
+            <label htmlFor="newPassword" className="block text-[#0a1f44] font-medium mb-2">New Password</label>
+            <input
+              id="newPassword"
+              name="newPassword"
+              type="password"
+              placeholder="New password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
+              className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-[#0a1f44]"
+              required
             />
-            <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters (any letters, numbers, or symbols allowed)</p>
+            <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters</p>
           </div>
           <div className="mb-6">
-            <label className="block text-[#0a1f44] font-medium mb-2">Confirm New Password</label>
-            <input 
-              type="password" 
-              placeholder="Confirm new password" 
-              value={confirmPassword} 
-              onChange={(e) => setConfirmPassword(e.target.value)} 
-              className="w-full border border-gray-300 px-4 py-3 rounded-lg" 
-              required 
+            <label htmlFor="confirmNewPassword" className="block text-[#0a1f44] font-medium mb-2">Confirm New Password</label>
+            <input
+              id="confirmNewPassword"
+              name="confirmNewPassword"
+              type="password"
+              placeholder="Confirm new password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="new-password"
+              className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:border-[#0a1f44]"
+              required
             />
           </div>
-          <button 
-            type="submit" 
-            disabled={loading} 
+          <button
+            type="submit"
+            disabled={loading}
             className="w-full bg-[#0a1f44] text-white py-3 rounded-lg font-medium hover:bg-[#1a2f5a] disabled:opacity-50"
           >
             {loading ? 'Resetting...' : 'Reset Password'}
