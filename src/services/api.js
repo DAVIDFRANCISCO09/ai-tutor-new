@@ -45,22 +45,31 @@ api.interceptors.response.use(async (response) => {
     else if (url === '/progress/overview/all') {
       await cacheProgressOverview(data);
     }
-    // Cache lessons (single or array)
+    // Cache lessons (single or array) and also cache the topics list for offline subject browsing
     else if (url.includes('/lessons/subject/')) {
       const lessons = data.data;
-      if (Array.isArray(lessons) && lessons.length) await cacheMultipleLessons(lessons);
+      if (Array.isArray(lessons) && lessons.length) {
+        // Cache each individual lesson
+        await cacheMultipleLessons(lessons);
+        // Extract subject and form from URL to cache the topics list (unique topics)
+        const subject = decodeURIComponent(url.split('/subject/')[1].split('?')[0]);
+        const form = new URLSearchParams(url.split('?')[1]).get('form');
+        const uniqueTopics = [...new Map(lessons.map(l => [l.topic, l])).values()];
+        await cacheTopicsList(subject, form, uniqueTopics);
+      }
     }
+    // Single lesson (by lessonId)
     else if (url.match(/\/lessons\/[^/]+\/[^/]+$/)) {
       if (data && data.lessonId) await cacheLesson(data);
     }
-    // Cache topics list
+    // Topics list (dedicated endpoint)
     else if (url.includes('/lessons/topics/')) {
       const parts = url.split('/');
       const subject = decodeURIComponent(parts[4]);
       const form = decodeURIComponent(parts[5]);
       await cacheTopicsList(subject, form, data);
     }
-    // Cache chat sessions
+    // Chat sessions
     else if (url === '/chat/history' && data.data) {
       for (const session of data.data) await cacheChatSession(session);
     }
@@ -92,13 +101,24 @@ api.interceptors.response.use(
       const cached = await getCachedProgressOverview();
       if (cached) return Promise.resolve({ data: cached });
     }
-    // Lessons (single)
+    // Lessons by subject (list of lessons for a subject+form) – used for topics list offline
+    if (url.includes('/lessons/subject/')) {
+      const urlParams = new URLSearchParams(url.split('?')[1]);
+      const form = urlParams.get('form');
+      const subject = decodeURIComponent(url.split('/subject/')[1].split('?')[0]);
+      const cached = await getCachedTopicsList(subject, form);
+      if (cached) {
+        // Return in the same structure as the online response: { data: { data: [...] } }
+        return Promise.resolve({ data: { data: cached } });
+      }
+    }
+    // Single lesson (by lessonId)
     if (url.match(/\/lessons\/[^/]+\/[^/]+$/)) {
       const lessonId = url.split('/').pop().split('?')[0];
       const cached = await getCachedLesson(lessonId);
       if (cached) return Promise.resolve({ data: cached });
     }
-    // Topics list
+    // Topics list (dedicated endpoint)
     if (url.includes('/lessons/topics/')) {
       const parts = url.split('/');
       const subject = decodeURIComponent(parts[4]);
@@ -117,7 +137,7 @@ api.interceptors.response.use(
       const session = await getCachedChatSession(sessionId);
       if (session) return Promise.resolve({ data: session });
     }
-    // Quiz result
+    // Quiz result for a lesson
     if (url.includes('/quiz/result/')) {
       const lessonId = url.split('/').pop();
       const result = await getCachedQuizResultForLesson(lessonId);

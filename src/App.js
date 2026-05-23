@@ -11,6 +11,7 @@ import Dash from './dashboard/Dash';
 import LessonPage from './dashboard/LessonPage';
 import QuizPage from './Quiz/QuizPage';
 import { Toaster } from 'react-hot-toast';
+import { precacheAllLessons } from './services/lessonService';
 
 function App() {
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
@@ -27,15 +28,13 @@ function App() {
     };
   }, []);
 
-  // Background pre‑caching: runs once when the user is logged in, online, and app loads
+  // Background pre‑caching when user is logged in and online
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userForm = localStorage.getItem('userForm');
     if (token && userForm && navigator.onLine && !precacheTriggered.current) {
       precacheTriggered.current = true;
-      import('./services/lessonService').then(({ precacheAllLessons }) => {
-        precacheAllLessons(userForm).catch(err => console.error('Pre‑caching error:', err));
-      });
+      precacheAllLessons(userForm).catch(err => console.error('Pre‑caching error:', err));
     }
   }, []);
 
@@ -43,7 +42,8 @@ function App() {
     <BrowserRouter>
       {isOffline && (
         <div className="bg-amber-500 text-white text-center py-2 text-sm font-medium sticky top-0 z-50">
-          You are offline. You can view lessons, past chats. New quizzes and AI chat require internet. Login/Register also need internet.
+         You are offline. You can view cached lessons, past chats.New quizzes and AI chat require internet.
+          Login/Register also need internet.
         </div>
       )}
       <Toaster position="top-center" />
