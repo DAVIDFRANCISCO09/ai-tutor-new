@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DashboardHeader } from '../dashboard/DashboardHeader';
-import { getMySubjects, getLessonsBySubjectAndForm } from '../services/lessonService';
+import { getMySubjects, getLessonsBySubjectAndForm, precacheAllLessons } from '../services/lessonService';
 import { cacheTopicsList } from '../services/cache';
 
 export const Dash = () => {
@@ -19,7 +19,7 @@ export const Dash = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // ========== HANDLER FUNCTIONS (defined at the top) ==========
+  // HANDLER FUNCTIONS 
   const handleSubjectClick = (subject) => {
     navigate(`/dashboard?subject=${encodeURIComponent(subject)}`);
     setSelectedSubject(subject);
@@ -40,7 +40,6 @@ export const Dash = () => {
     localStorage.clear();
     navigate('/');
   };
-  
 
   // Parse query parameter
   useEffect(() => {
@@ -57,6 +56,7 @@ export const Dash = () => {
     }
   }, [location.search, subjectsData, navigate]);
 
+  // Load subjects (main data)
   useEffect(() => {
     const loadSubjects = async () => {
       try {
@@ -69,7 +69,11 @@ export const Dash = () => {
         }
       } catch (err) {
         console.error('Failed to load subjects', err);
-        setError('Failed to load subjects. Please check your internet connection.');
+        if (!navigator.onLine) {
+          setError('You are offline. Please connect to the internet and refresh to load subjects.');
+        } else {
+          setError('Failed to load subjects. Please check your internet connection.');
+        }
       } finally {
         setLoading(false);
       }
@@ -77,6 +81,22 @@ export const Dash = () => {
     loadSubjects();
   }, []);
 
+  // Pre‑cache all lessons in the background (only after subjects are loaded and online)
+  useEffect(() => {
+    if (!loading && subjectsData.length > 0 && navigator.onLine && userForm) {
+      // Use requestIdleCallback to run when browser is idle, or fallback to setTimeout
+      const runPrecache = () => {
+        precacheAllLessons(userForm).catch(err => console.error('Precache error:', err));
+      };
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(runPrecache, { timeout: 5000 });
+      } else {
+        setTimeout(runPrecache, 2000);
+      }
+    }
+  }, [loading, subjectsData, userForm]);
+
+  // Load topics when a subject is selected
   useEffect(() => {
     if (selectedSubject && selectionStep === 'topic') {
       const loadTopics = async () => {
@@ -88,6 +108,9 @@ export const Dash = () => {
         } catch (err) {
           console.error('Failed to load topics', err);
           setTopics([]);
+          if (!navigator.onLine) {
+            setError('You are offline and no topics have been cached. Please go online to view topics.');
+          }
         }
       };
       loadTopics();
