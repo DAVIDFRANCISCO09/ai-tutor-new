@@ -135,7 +135,16 @@ export default function QuizPage() {
     navigate('/');
   };
 
-
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1a365d] mx-auto mb-4"></div>
+          <p className="text-gray-600 text-lg">Generating your AI quiz...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!questions.length) {
     return (
