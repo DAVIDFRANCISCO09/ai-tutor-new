@@ -65,7 +65,7 @@ export default function QuizPage() {
       explanation: questions[currentIndex].explanation
     }]);
     if (isCorrect) setScore(score + 1);
-    setFeedback(isCorrect ? ' Correct!' : ` Incorrect. Correct answer: ${questions[currentIndex].correct}`);
+    setFeedback(isCorrect ? ' ✅ Correct!' : ` ❌ Incorrect. Correct answer: ${questions[currentIndex].correct}`);
     setTimeout(() => {
       if (currentIndex + 1 >= questions.length) {
         setCompleted(true);
@@ -166,23 +166,12 @@ export default function QuizPage() {
     let nextButtonAction = () => navigate('/dashboard');
     let infoMessage = '';
 
-if (hasMoreLessons) {
-      nextButtonText = 'Next Lesson →';
+    if (hasMoreLessons) {
+      nextButtonText = 'Next Lesson';
       nextButtonAction = handleNextContent;
       infoMessage = ` You have ${allLessons.length - (currentLessonIndex + 1)} more lesson(s) in "${topic}".`;
     } else if (hasMoreTopics) {
-      nextButtonText = 'Next Topic →';
-      nextButtonAction = handleNextContent;
-      infoMessage = ` Topic "${topic}" completed! Next: ${allTopics[currentTopicIndex + 1]?.topic}.`;
-    } else {
-      infoMessage = ` Subject "${subject}" completed! All topics finished.`;
-    }
-if (hasMoreLessons) {
-      nextButtonText = 'Next Lesson →';
-      nextButtonAction = handleNextContent;
-      infoMessage = ` You have ${allLessons.length - (currentLessonIndex + 1)} more lesson(s) in "${topic}".`;
-    } else if (hasMoreTopics) {
-      nextButtonText = 'Next Topic →';
+      nextButtonText = 'Next Topic';
       nextButtonAction = handleNextContent;
       infoMessage = ` Topic "${topic}" completed! Next: ${allTopics[currentTopicIndex + 1]?.topic}.`;
     } else {
@@ -243,7 +232,7 @@ if (hasMoreLessons) {
               ))}
             </div>
 
-       <div className="mt-8 flex flex-wrap gap-4 justify-center">
+            <div className="mt-8 flex flex-wrap gap-4 justify-center">
               <button
                 onClick={handleRetake}
                 className="flex items-center gap-2 bg-[#1a365d] text-white px-6 py-3 rounded-xl font-semibold text-base shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-[#1a365d] focus:ring-offset-2 active:scale-[0.98] transition-all"
@@ -263,7 +252,7 @@ if (hasMoreLessons) {
         </div>
       </div>
     );
-  }     
+  }
 
   // ========================
   // ACTIVE QUIZ VIEW (compact)
@@ -307,7 +296,7 @@ if (hasMoreLessons) {
                     : 'border-gray-200 hover:bg-gray-50'
                 }`}
               >
-             <input
+                <input
                   type="radio"
                   name="quiz"
                   value={opt}
@@ -319,8 +308,8 @@ if (hasMoreLessons) {
               </label>
             ))}
           </div>
-   
-  <button
+
+          <button
             onClick={handleSubmit}
             disabled={!selected}
             className={`w-full py-2.5 rounded-lg font-semibold text-sm transition ${!selected ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#1a365d] text-white hover:bg-blue-800 active:scale-98'}`}
@@ -337,4 +326,4 @@ if (hasMoreLessons) {
       </div>
     </div>
   );
-}        
+}
